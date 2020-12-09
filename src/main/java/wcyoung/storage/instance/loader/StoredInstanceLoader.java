@@ -12,7 +12,7 @@ public class StoredInstanceLoader implements InstanceLoader {
     private Storage storage;
 
     public StoredInstanceLoader() {
-        storage = storage.getInstance();
+        storage = Storage.getInstance();
     }
 
     @Override
@@ -53,7 +53,7 @@ public class StoredInstanceLoader implements InstanceLoader {
         }
 
         if (constructors.length > 1) {
-            throw new InstanceLoadException(clazz + " has too many constructors.");
+            throw new InstanceLoadException(clazz + " has too many public constructors.");
         }
 
         return constructors[0];
