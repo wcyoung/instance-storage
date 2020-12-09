@@ -17,7 +17,7 @@ public class StoredInstanceLoader implements InstanceLoader {
 
     @Override
     public void load(String basePackage) {
-        Class<?>[] classes = ClassWithAnnotationScanner.scan(basePackage, Stored.class);
+        Class<?>[] classes = AnnotatedClassScanner.scan(basePackage, Stored.class);
 
         for (Class<?> clazz : classes) {
             storage.add(generateInstance(clazz));
