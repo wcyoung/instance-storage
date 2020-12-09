@@ -1,5 +1,7 @@
 package wcyoung.storage.instance;
 
+import wcyoung.storage.instance.loader.InstanceLoader;
+
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -36,6 +38,10 @@ public class Storage {
 
     public void remove(Class<?> key) {
         INSTANCES.remove(key);
+    }
+
+    public void load(InstanceLoader loader, String basePackage) {
+        loader.load(basePackage);
     }
 
 }
