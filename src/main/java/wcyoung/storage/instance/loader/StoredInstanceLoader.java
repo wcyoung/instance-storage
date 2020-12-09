@@ -1,11 +1,17 @@
 package wcyoung.storage.instance.loader;
 
-import wcyoung.storage.instance.Storage;
-import wcyoung.storage.instance.Stored;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.stream.Stream;
+
+import wcyoung.storage.instance.Inject;
+import wcyoung.storage.instance.Storage;
+import wcyoung.storage.instance.Stored;
 
 public class StoredInstanceLoader implements InstanceLoader {
 
@@ -19,25 +25,54 @@ public class StoredInstanceLoader implements InstanceLoader {
     public void load(String basePackage) {
         Class<?>[] classes = AnnotatedClassScanner.scan(basePackage, Stored.class);
 
+        Map<Class<?>, Set<Class<?>>> lazyInjectClasses = new HashMap<>();
+
         for (Class<?> clazz : classes) {
-            storage.add(generateInstance(clazz));
+            storage.add(generateInstance(clazz, lazyInjectClasses));
+        }
+
+        for (Entry<Class<?>, Set<Class<?>>> entry : lazyInjectClasses.entrySet()) {
+            inject(entry.getKey(), entry.getValue());
         }
     }
 
-    protected Object generateInstance(Class<?> clazz) {
+    protected Object generateInstance(Class<?> clazz, Map<Class<?>, Set<Class<?>>> lazyInjectClasses) {
         Constructor<?> constructor = findConstructor(clazz);
+
+        Set<Class<?>> classesToInject = new HashSet<>();
 
         Object[] parameters = Stream.of(constructor.getParameterTypes())
                 .map(type -> {
-                    try {
-                        return type.newInstance();
-                    } catch (InstantiationException | IllegalAccessException e) {
-                        throw new InstanceLoadException(
-                                "Parameters of constructor must have a default public constructor.");
+                    if (!type.isAnnotationPresent(Stored.class)) {
+                        return newInstance(type);
                     }
+
+                    if (storage.contains(type)) {
+                        return storage.get(type);
+                    }
+
+                    classesToInject.add(type);
+                    return null;
                 })
                 .toArray();
 
+        if (!classesToInject.isEmpty()) {
+            lazyInjectClasses.put(clazz, classesToInject);
+        }
+
+        return newInstance(constructor, parameters);
+    }
+
+    protected Object newInstance(Class<?> clazz) {
+        try {
+            return clazz.newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            throw new InstanceLoadException(
+                    clazz + " Parameters of constructor must have a default public constructor.");
+        }
+    }
+
+    protected Object newInstance(Constructor<?> constructor, Object[] parameters) {
         try {
             return constructor.newInstance(parameters);
         } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
@@ -57,6 +92,25 @@ public class StoredInstanceLoader implements InstanceLoader {
         }
 
         return constructors[0];
+    }
+
+    protected void inject(Class<?> clazz, Set<Class<?>> fieldTypes) {
+        Stream.of(clazz.getDeclaredFields())
+                .filter(f -> {
+                    return fieldTypes.contains(f.getType())
+                            && f.isAnnotationPresent(Inject.class);
+                })
+                .forEach(f -> {
+                    if (!f.isAccessible()) {
+                        f.setAccessible(true);
+                    }
+
+                    try {
+                        f.set(storage.get(clazz), storage.get(f.getType()));
+                    } catch (IllegalArgumentException | IllegalAccessException e) {
+                        throw new InstanceLoadException(e);
+                    }
+                });
     }
 
 }
