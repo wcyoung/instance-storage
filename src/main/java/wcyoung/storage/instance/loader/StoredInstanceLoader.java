@@ -47,7 +47,7 @@ public class StoredInstanceLoader implements InstanceLoader {
                         return newInstance(type);
                     }
 
-                    if (storage.contains(type)) {
+                    if (storage.has(type)) {
                         return storage.get(type);
                     }
 

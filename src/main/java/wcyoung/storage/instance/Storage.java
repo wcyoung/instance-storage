@@ -19,7 +19,7 @@ public class Storage {
         return STORAGE;
     }
 
-    public boolean contains(Class<?> key) {
+    public boolean has(Class<?> key) {
         return INSTANCES.containsKey(key);
     }
 
