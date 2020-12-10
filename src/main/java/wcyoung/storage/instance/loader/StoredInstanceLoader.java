@@ -9,16 +9,16 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import wcyoung.storage.instance.Inject;
+import wcyoung.storage.instance.ForceInject;
 import wcyoung.storage.instance.Storage;
 import wcyoung.storage.instance.Stored;
 
 public class StoredInstanceLoader implements InstanceLoader {
 
-    private Storage storage;
+    private final Storage STORAGE;
 
     public StoredInstanceLoader() {
-        storage = Storage.getInstance();
+        STORAGE = Storage.getInstance();
     }
 
     @Override
@@ -28,7 +28,7 @@ public class StoredInstanceLoader implements InstanceLoader {
         Map<Class<?>, Set<Class<?>>> lazyInjectClasses = new HashMap<>();
 
         for (Class<?> clazz : classes) {
-            storage.add(generateInstance(clazz, lazyInjectClasses));
+            STORAGE.add(generateInstance(clazz, lazyInjectClasses));
         }
 
         for (Entry<Class<?>, Set<Class<?>>> entry : lazyInjectClasses.entrySet()) {
@@ -47,8 +47,8 @@ public class StoredInstanceLoader implements InstanceLoader {
                         return newInstance(type);
                     }
 
-                    if (storage.has(type)) {
-                        return storage.get(type);
+                    if (STORAGE.has(type)) {
+                        return STORAGE.get(type);
                     }
 
                     classesToInject.add(type);
@@ -96,17 +96,15 @@ public class StoredInstanceLoader implements InstanceLoader {
 
     protected void inject(Class<?> clazz, Set<Class<?>> fieldTypes) {
         Stream.of(clazz.getDeclaredFields())
-                .filter(f -> {
-                    return fieldTypes.contains(f.getType())
-                            && f.isAnnotationPresent(Inject.class);
-                })
+                .filter(f -> fieldTypes.contains(f.getType())
+                        && f.isAnnotationPresent(ForceInject.class))
                 .forEach(f -> {
                     if (!f.isAccessible()) {
                         f.setAccessible(true);
                     }
 
                     try {
-                        f.set(storage.get(clazz), storage.get(f.getType()));
+                        f.set(STORAGE.get(clazz), STORAGE.get(f.getType()));
                     } catch (IllegalArgumentException | IllegalAccessException e) {
                         throw new InstanceLoadException(e);
                     }
