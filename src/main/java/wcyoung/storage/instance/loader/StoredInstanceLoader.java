@@ -23,12 +23,15 @@ public class StoredInstanceLoader implements InstanceLoader {
         STORAGE = Storage.getInstance();
     }
 
+    protected Class<?>[] scan(String basePackage) {
+        return AnnotatedClassScanner.scan(basePackage, Stored.class);
+    }
+
     @Override
     public void load(String basePackage) {
-        Class<?>[] classes = AnnotatedClassScanner.scan(basePackage, Stored.class);
-
         Map<Class<?>, Set<Class<?>>> lazyInjectClasses = new HashMap<>();
 
+        Class<?>[] classes = scan(basePackage);
         for (Class<?> clazz : classes) {
             STORAGE.add(generateInstance(clazz, lazyInjectClasses));
         }
