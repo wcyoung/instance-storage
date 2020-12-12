@@ -28,6 +28,10 @@ public class Storage {
         return (T) INSTANCES.get(key);
     }
 
+    public int size() {
+        return INSTANCES.size();
+    }
+
     public void add(Object value) {
         add(value.getClass(), value);
     }
@@ -38,6 +42,10 @@ public class Storage {
 
     public void remove(Class<?> key) {
         INSTANCES.remove(key);
+    }
+
+    public void clear() {
+        INSTANCES.clear();
     }
 
     public void load(InstanceLoader loader, String basePackage) {
