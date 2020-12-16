@@ -25,25 +25,24 @@ public class StoredInstanceLoader implements InstanceLoader {
 
     @Override
     public void load(String basePackage) {
-        Map<Class<?>, Set<Class<?>>> lazyInjectClasses = new HashMap<>();
+        Map<Class<?>, Set<Class<?>>> forceInjectClasses = new HashMap<>();
 
         Class<?>[] classes = scan(basePackage);
         for (Class<?> clazz : classes) {
-            loadInstances(clazz, lazyInjectClasses);
+            loadInstances(clazz, forceInjectClasses);
         }
 
-        for (Entry<Class<?>, Set<Class<?>>> entry : lazyInjectClasses.entrySet()) {
+        for (Entry<Class<?>, Set<Class<?>>> entry : forceInjectClasses.entrySet()) {
             inject(entry.getKey(), entry.getValue());
         }
     }
 
-    protected Object loadInstances(Class<?> clazz, Map<Class<?>, Set<Class<?>>> lazyInjectClasses) {
-        Storage storage = Storage.getInstance();
-        if (storage.has(clazz)) {
-            return storage.get(clazz);
+    protected Object loadInstances(Class<?> clazz, Map<Class<?>, Set<Class<?>>> forceInjectClasses) {
+        if (STORAGE.has(clazz)) {
+            return STORAGE.get(clazz);
         }
 
-        Set<Class<?>> classesToInject = new HashSet<>();
+        Set<Class<?>> circularReferences = new HashSet<>();
 
         Constructor<?> constructor = findConstructor(clazz);
         Object[] parameters = Arrays.stream(constructor.getParameterTypes())
@@ -55,29 +54,26 @@ public class StoredInstanceLoader implements InstanceLoader {
                     // circular reference
                     if (hasConstructorParameterType(type, clazz)) {
                         if (!hasForceInjectField(clazz, type)) {
-                            throw new InstanceLoadException("circular reference error. cause without @ForceInject");
+                            throw new InstanceLoadException(clazz + " <-> " + type
+                                    + " circular reference error."
+                                    + " Do use @ForceInject for circular references,"
+                                    + " but this suggestion not recommended.");
                         }
 
-                        classesToInject.add(type);
+                        circularReferences.add(type);
                         return null;
                     }
 
-                    /*
-                    if (STORAGE.has(type)) {
-                        return STORAGE.get(type);
-                    }
-                    */
-
-                    return loadInstances(type, lazyInjectClasses);
+                    return loadInstances(type, forceInjectClasses);
                 })
                 .toArray();
 
-        if (!classesToInject.isEmpty()) {
-            lazyInjectClasses.put(clazz, classesToInject);
+        if (!circularReferences.isEmpty()) {
+            forceInjectClasses.put(clazz, circularReferences);
         }
 
         Object instance = newInstance(constructor, parameters);
-        storage.add(clazz, instance);
+        STORAGE.add(clazz, instance);
 
         return instance;
     }
@@ -134,7 +130,7 @@ public class StoredInstanceLoader implements InstanceLoader {
             return clazz.newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
             throw new InstanceLoadException(
-                    clazz + " Parameters of constructor must have a default public constructor.");
+                    clazz + " parameters of constructor must have a default public constructor.");
         }
     }
 
