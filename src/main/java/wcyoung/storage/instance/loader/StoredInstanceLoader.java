@@ -1,19 +1,15 @@
 package wcyoung.storage.instance.loader;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import wcyoung.storage.instance.ForceInject;
 import wcyoung.storage.instance.Inject;
 import wcyoung.storage.instance.Storage;
 import wcyoung.storage.instance.Stored;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
+import java.util.Map.Entry;
 
 public class StoredInstanceLoader implements InstanceLoader {
 
@@ -33,7 +29,7 @@ public class StoredInstanceLoader implements InstanceLoader {
 
         Class<?>[] classes = scan(basePackage);
         for (Class<?> clazz : classes) {
-            STORAGE.add(generateInstance(clazz, lazyInjectClasses));
+            loadInstances(clazz, lazyInjectClasses);
         }
 
         for (Entry<Class<?>, Set<Class<?>>> entry : lazyInjectClasses.entrySet()) {
@@ -41,23 +37,38 @@ public class StoredInstanceLoader implements InstanceLoader {
         }
     }
 
-    protected Object generateInstance(Class<?> clazz, Map<Class<?>, Set<Class<?>>> lazyInjectClasses) {
-        Constructor<?> constructor = findConstructor(clazz);
+    protected Object loadInstances(Class<?> clazz, Map<Class<?>, Set<Class<?>>> lazyInjectClasses) {
+        Storage storage = Storage.getInstance();
+        if (storage.has(clazz)) {
+            return storage.get(clazz);
+        }
 
         Set<Class<?>> classesToInject = new HashSet<>();
 
-        Object[] parameters = Stream.of(constructor.getParameterTypes())
+        Constructor<?> constructor = findConstructor(clazz);
+        Object[] parameters = Arrays.stream(constructor.getParameterTypes())
                 .map(type -> {
                     if (!type.isAnnotationPresent(Stored.class)) {
-                        return newInstance(type);
+                        return null;
                     }
 
+                    // circular reference
+                    if (hasConstructorParameterType(type, clazz)) {
+                        if (!hasForceInjectField(clazz, type)) {
+                            throw new InstanceLoadException("circular reference error. cause without @ForceInject");
+                        }
+
+                        classesToInject.add(type);
+                        return null;
+                    }
+
+                    /*
                     if (STORAGE.has(type)) {
                         return STORAGE.get(type);
                     }
+                    */
 
-                    classesToInject.add(type);
-                    return null;
+                    return loadInstances(type, lazyInjectClasses);
                 })
                 .toArray();
 
@@ -65,7 +76,57 @@ public class StoredInstanceLoader implements InstanceLoader {
             lazyInjectClasses.put(clazz, classesToInject);
         }
 
-        return newInstance(constructor, parameters);
+        Object instance = newInstance(constructor, parameters);
+        storage.add(clazz, instance);
+
+        return instance;
+    }
+
+    protected boolean hasConstructorParameterType(Class<?> clazz, Class<?> parameterType) {
+        Constructor<?> constructor = findConstructor(clazz);
+
+        for (Class<?> type : constructor.getParameterTypes()) {
+            if (type == parameterType) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    protected boolean hasForceInjectField(Class<?> clazz, Class<?> fieldType) {
+        for (Field field : clazz.getDeclaredFields()) {
+            if (field.getType() == fieldType && field.isAnnotationPresent(ForceInject.class)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    protected Constructor<?> findConstructor(Class<?> clazz) {
+        Constructor<?>[] constructors = clazz.getConstructors();
+        if (constructors.length == 0) {
+            throw new InstanceLoadException(clazz + " does not have a public constructor.");
+        }
+
+        if (constructors.length == 1) {
+            return constructors[0];
+        }
+
+        Constructor<?>[] constructorsWithInject = Arrays.stream(constructors)
+                .filter(constructor -> constructor.isAnnotationPresent(Inject.class))
+                .toArray(Constructor<?>[]::new);
+
+        if (constructorsWithInject.length == 0) {
+            throw new InstanceLoadException(clazz + " does not have a public constructor with @Inject");
+        }
+
+        if (constructorsWithInject.length > 1) {
+            throw new InstanceLoadException(clazz + " has too many public constructors with @Inject");
+        }
+
+        return constructorsWithInject[0];
     }
 
     protected Object newInstance(Class<?> clazz) {
@@ -86,33 +147,8 @@ public class StoredInstanceLoader implements InstanceLoader {
         }
     }
 
-    protected Constructor<?> findConstructor(Class<?> clazz) {
-        Constructor<?>[] constructors = clazz.getConstructors();
-        if (constructors.length == 0) {
-            throw new InstanceLoadException(clazz + " does not have a public constructor.");
-        }
-
-        if (constructors.length == 1) {
-            return constructors[0];
-        }
-
-        Constructor<?>[] constructorsWithInject = Stream.of(constructors)
-                .filter(constructor -> constructor.isAnnotationPresent(Inject.class))
-                .toArray(Constructor<?>[]::new);
-
-        if (constructorsWithInject.length == 0) {
-            throw new InstanceLoadException(clazz + " does not have a public constructor with @Inject");
-        }
-
-        if (constructorsWithInject.length > 1) {
-            throw new InstanceLoadException(clazz + " has too many public constructors with @Inject");
-        }
-
-        return constructorsWithInject[0];
-    }
-
     protected void inject(Class<?> clazz, Set<Class<?>> fieldTypes) {
-        Stream.of(clazz.getDeclaredFields())
+        Arrays.stream(clazz.getDeclaredFields())
                 .filter(f -> fieldTypes.contains(f.getType())
                         && f.isAnnotationPresent(ForceInject.class))
                 .forEach(f -> {
