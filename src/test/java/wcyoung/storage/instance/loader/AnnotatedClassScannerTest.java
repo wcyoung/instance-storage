@@ -11,7 +11,7 @@ class AnnotatedClassScannerTest {
     @Test
     void scan() {
         Class<?>[] expectedClasses = {ClassA.class, ClassB.class, ClassC.class, ClassD.class, ClassE.class};
-        Class<?>[] scannedClasses = AnnotatedClassScanner.scan("wcyoung.storage.instance", Stored.class);
+        Class<?>[] scannedClasses = AnnotatedClassScanner.scan("wcyoung.storage.instance.target", Stored.class);
         assertArrayEquals(expectedClasses, scannedClasses);
     }
 
