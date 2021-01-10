@@ -15,8 +15,8 @@ public class StoredInstanceLoader implements InstanceLoader {
 
     private final Storage STORAGE;
 
-    public StoredInstanceLoader() {
-        STORAGE = Storage.getInstance();
+    public StoredInstanceLoader(Storage storage) {
+        this.STORAGE = storage;
     }
 
     protected Class<?>[] scan(String basePackage) {

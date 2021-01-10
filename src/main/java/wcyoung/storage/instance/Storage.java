@@ -1,22 +1,14 @@
 package wcyoung.storage.instance;
 
-import wcyoung.storage.instance.loader.InstanceLoader;
-
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 public class Storage {
 
-    private static final Storage STORAGE = new Storage();
-
     private final ConcurrentMap<Class<?>, Object> INSTANCES;
 
-    private Storage() {
+    public Storage() {
         INSTANCES = new ConcurrentHashMap<>();
-    }
-
-    public static Storage getInstance() {
-        return STORAGE;
     }
 
     public boolean has(Class<?> key) {
@@ -46,10 +38,6 @@ public class Storage {
 
     public void clear() {
         INSTANCES.clear();
-    }
-
-    public void load(InstanceLoader loader, String basePackage) {
-        loader.load(basePackage);
     }
 
 }
