@@ -1,43 +1,19 @@
 package wcyoung.storage.instance;
 
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
+public interface Storage<K, V> {
 
-public class Storage {
+    boolean has(K key);
 
-    private final ConcurrentMap<Class<?>, Object> INSTANCES;
+    <T> T get(K key);
 
-    public Storage() {
-        INSTANCES = new ConcurrentHashMap<>();
-    }
+    int size();
 
-    public boolean has(Class<?> key) {
-        return INSTANCES.containsKey(key);
-    }
+    boolean add(K key, V value);
 
-    @SuppressWarnings("unchecked")
-    public <T> T get(Class<T> key) {
-        return (T) INSTANCES.get(key);
-    }
+    boolean replace(K key, V value);
 
-    public int size() {
-        return INSTANCES.size();
-    }
+    boolean remove(K key);
 
-    public void add(Object value) {
-        add(value.getClass(), value);
-    }
-
-    public void add(Class<?> key, Object value) {
-        INSTANCES.put(key, value);
-    }
-
-    public void remove(Class<?> key) {
-        INSTANCES.remove(key);
-    }
-
-    public void clear() {
-        INSTANCES.clear();
-    }
+    void clear();
 
 }
