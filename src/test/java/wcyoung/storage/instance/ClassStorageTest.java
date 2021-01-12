@@ -22,7 +22,7 @@ class ClassStorageTest {
     class TestWithSetupData {
 
         @BeforeEach
-        void setUp() throws Exception {
+        void setUp() {
             storage = new ClassStorage();
             storage.add(ClassA.class, new ClassA());
         }
@@ -59,6 +59,20 @@ class ClassStorageTest {
         }
 
         @Test
+        void testAddObjectThroughSupplierFail() {
+            boolean isAdded = storage.add(ClassA::new);
+            assertFalse(isAdded);
+            assertTrue(storage.has(ClassA.class));
+        }
+
+        @Test
+        void testAddObjectWithClassThroughSupplierFail() {
+            boolean isAdded = storage.add(ClassA.class, ClassA::new);
+            assertFalse(isAdded);
+            assertTrue(storage.has(ClassA.class));
+        }
+
+        @Test
         void testReplace() {
             ClassA classA = storage.get(ClassA.class);
             storage.replace(ClassA.class, new ClassA());
@@ -86,7 +100,7 @@ class ClassStorageTest {
     class TestWithoutSetupData {
 
         @BeforeEach
-        void setUp() throws Exception {
+        void setUp() {
             storage = new ClassStorage();
         }
 
@@ -100,6 +114,20 @@ class ClassStorageTest {
         @Test
         void testAddObjectWithClass() {
             boolean isAdded = storage.add(ClassA.class, new ClassA());
+            assertTrue(isAdded);
+            assertTrue(storage.has(ClassA.class));
+        }
+
+        @Test
+        void testAddObjectThroughSupplier() {
+            boolean isAdded = storage.add(ClassA::new);
+            assertTrue(isAdded);
+            assertTrue(storage.has(ClassA.class));
+        }
+
+        @Test
+        void testAddObjectWithClassThroughSupplier() {
+            boolean isAdded = storage.add(ClassA.class, ClassA::new);
             assertTrue(isAdded);
             assertTrue(storage.has(ClassA.class));
         }

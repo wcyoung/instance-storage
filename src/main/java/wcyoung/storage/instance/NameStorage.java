@@ -2,6 +2,7 @@ package wcyoung.storage.instance;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.function.Supplier;
 
 public class NameStorage implements Storage<String, Object> {
 
@@ -39,6 +40,15 @@ public class NameStorage implements Storage<String, Object> {
 
         INSTANCES.put(key, value);
         return true;
+    }
+
+    public <T> boolean add(Supplier<T> supplier) {
+        return add(supplier.get());
+    }
+
+    @Override
+    public <T> boolean add(String key, Supplier<T> supplier) {
+        return add(key, supplier.get());
     }
 
     @Override
