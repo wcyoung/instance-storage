@@ -82,6 +82,7 @@ class ClassStorageTest {
             storage.replace(ClassA.class, new ClassA());
             ClassA newClassA = storage.get(ClassA.class);
 
+            assertNotNull(newClassA);
             assertNotSame(classA, newClassA);
         }
 
@@ -91,6 +92,7 @@ class ClassStorageTest {
             storage.replace(ClassA.class, ClassA::new);
             ClassA newClassA = storage.get(ClassA.class);
 
+            assertNotNull(newClassA);
             assertNotSame(classA, newClassA);
         }
 
