@@ -18,12 +18,16 @@ class ClassStorageTest {
 
     private ClassStorage storage;
 
+    @BeforeEach
+    void setUp() {
+        storage = new ClassStorage();
+    }
+
     @Nested
     class TestWithSetupData {
 
         @BeforeEach
-        void setUp() {
-            storage = new ClassStorage();
+        void setUpData() {
             storage.add(ClassA.class, new ClassA());
         }
 
@@ -98,11 +102,6 @@ class ClassStorageTest {
 
     @Nested
     class TestWithoutSetupData {
-
-        @BeforeEach
-        void setUp() {
-            storage = new ClassStorage();
-        }
 
         @Test
         void testAddObject() {
