@@ -61,6 +61,11 @@ public class NameStorage implements Storage<String, Object> {
     }
 
     @Override
+    public <T> boolean replace(String key, Supplier<T> supplier) {
+        return replace(key, supplier.get());
+    }
+
+    @Override
     public boolean remove(String key) {
         if (!has(key)) {
             return false;

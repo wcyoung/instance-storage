@@ -61,6 +61,11 @@ public class ClassStorage implements Storage<Class<?>, Object> {
     }
 
     @Override
+    public <T> boolean replace(Class<?> key, Supplier<T> supplier) {
+        return replace(key, supplier.get());
+    }
+
+    @Override
     public boolean remove(Class<?> key) {
         if (!has(key)) {
             return false;

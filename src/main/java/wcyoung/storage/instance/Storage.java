@@ -16,6 +16,8 @@ public interface Storage<K, V> {
 
     boolean replace(K key, V value);
 
+    <T> boolean replace(K key, Supplier<T> supplier);
+
     boolean remove(K key);
 
     void clear();
