@@ -86,6 +86,15 @@ class ClassStorageTest {
         }
 
         @Test
+        void testReplaceThroughSupplier() {
+            ClassA classA = storage.get(ClassA.class);
+            storage.replace(ClassA.class, ClassA::new);
+            ClassA newClassA = storage.get(ClassA.class);
+
+            assertNotSame(classA, newClassA);
+        }
+
+        @Test
         void testRemove() {
             boolean isRemoved = storage.remove(ClassA.class);
             assertTrue(isRemoved);
@@ -134,6 +143,13 @@ class ClassStorageTest {
         @Test
         void testReplaceFail() {
             boolean isReplaced = storage.replace(ClassA.class, new ClassA());
+            assertFalse(isReplaced);
+            assertFalse(storage.has(ClassA.class));
+        }
+
+        @Test
+        void testReplaceThroughSupplierFail() {
+            boolean isReplaced = storage.replace(ClassA.class, ClassA::new);
             assertFalse(isReplaced);
             assertFalse(storage.has(ClassA.class));
         }
