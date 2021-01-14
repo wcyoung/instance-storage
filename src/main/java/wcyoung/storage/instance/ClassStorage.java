@@ -42,12 +42,12 @@ public class ClassStorage implements Storage<Class<?>, Object> {
         return true;
     }
 
-    public <T> boolean add(Supplier<T> supplier) {
+    public boolean add(Supplier<?> supplier) {
         return add(supplier.get());
     }
 
     @Override
-    public <T> boolean add(Class<?> key, Supplier<T> supplier) {
+    public boolean add(Class<?> key, Supplier<?> supplier) {
         return add(key, supplier.get());
     }
 
@@ -61,7 +61,7 @@ public class ClassStorage implements Storage<Class<?>, Object> {
     }
 
     @Override
-    public <T> boolean replace(Class<?> key, Supplier<T> supplier) {
+    public boolean replace(Class<?> key, Supplier<?> supplier) {
         return replace(key, supplier.get());
     }
 

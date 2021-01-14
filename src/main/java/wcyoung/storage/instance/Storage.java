@@ -12,11 +12,11 @@ public interface Storage<K, V> {
 
     boolean add(K key, V value);
 
-    <T> boolean add(K key, Supplier<T> supplier);
+    boolean add(K key, Supplier<?> supplier);
 
     boolean replace(K key, V value);
 
-    <T> boolean replace(K key, Supplier<T> supplier);
+    boolean replace(K key, Supplier<?> supplier);
 
     boolean remove(K key);
 

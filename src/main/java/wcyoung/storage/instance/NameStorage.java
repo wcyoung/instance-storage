@@ -42,12 +42,12 @@ public class NameStorage implements Storage<String, Object> {
         return true;
     }
 
-    public <T> boolean add(Supplier<T> supplier) {
+    public boolean add(Supplier<?> supplier) {
         return add(supplier.get());
     }
 
     @Override
-    public <T> boolean add(String key, Supplier<T> supplier) {
+    public boolean add(String key, Supplier<?> supplier) {
         return add(key, supplier.get());
     }
 
@@ -61,7 +61,7 @@ public class NameStorage implements Storage<String, Object> {
     }
 
     @Override
-    public <T> boolean replace(String key, Supplier<T> supplier) {
+    public boolean replace(String key, Supplier<?> supplier) {
         return replace(key, supplier.get());
     }
 
