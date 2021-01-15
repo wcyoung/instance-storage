@@ -20,7 +20,7 @@ class AnnotatedClassScannerTest {
         Set<Class<?>> classes = scanner.scan();
 
         Class<?>[] expectedClasses = {ClassA.class, ClassB.class, ClassC.class, ClassD.class};
-        assertArrayEquals(expectedClasses, classes.toArray(new Class<?>[classes.size()]));
+        assertArrayEquals(expectedClasses, classes.toArray(new Class<?>[0]));
     }
 
 }
