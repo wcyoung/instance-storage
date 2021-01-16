@@ -16,7 +16,7 @@ class AnnotatedClassScannerTest {
     @Test
     void scan() {
         AnnotatedClassScanner scanner = new AnnotatedClassScanner(
-                "wcyoung.storage.instance.classes",Item.class);
+                "wcyoung.storage.instance.classes", Item.class);
         Set<Class<?>> classes = scanner.scan();
 
         Class<?>[] expectedClasses = {ClassA.class, ClassB.class, ClassC.class, ClassD.class};
