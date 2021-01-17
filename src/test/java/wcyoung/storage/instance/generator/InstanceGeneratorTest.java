@@ -1,7 +1,9 @@
 package wcyoung.storage.instance.generator;
 
 import org.junit.jupiter.api.Test;
+import wcyoung.storage.instance.classes.AbstractClassA;
 import wcyoung.storage.instance.classes.ClassA;
+import wcyoung.storage.instance.classes.InterfaceA;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -11,6 +13,16 @@ class InstanceGeneratorTest {
     void generate() {
         ClassA classA = InstanceGenerator.generate(ClassA.class);
         assertNotNull(classA);
+    }
+
+    @Test
+    void generateFailBecauseBeInterface() {
+        assertThrows(InstanceGenerateException.class, () -> InstanceGenerator.generate(InterfaceA.class));
+    }
+
+    @Test
+    void generateFailBecauseBeAbstract() {
+        assertThrows(InstanceGenerateException.class, () -> InstanceGenerator.generate(AbstractClassA.class));
     }
 
 }
