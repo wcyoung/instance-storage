@@ -16,12 +16,12 @@ class InstanceGeneratorTest {
     }
 
     @Test
-    void generateFailBecauseBeInterface() {
+    void generateFailBecauseInterface() {
         assertThrows(InstanceGenerateException.class, () -> InstanceGenerator.generate(InterfaceA.class));
     }
 
     @Test
-    void generateFailBecauseBeAbstract() {
+    void generateFailBecauseAbstract() {
         assertThrows(InstanceGenerateException.class, () -> InstanceGenerator.generate(AbstractClassA.class));
     }
 
