@@ -1,9 +1,7 @@
 package wcyoung.storage.instance.scanner;
 
-import java.util.Set;
+public interface ClassScanner<T> {
 
-public interface ClassScanner {
-
-    Set<Class<?>> scan();
+    T scan();
 
 }

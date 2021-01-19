@@ -6,7 +6,7 @@ import java.util.Set;
 import org.reflections.Reflections;
 import org.reflections.scanners.TypeAnnotationsScanner;
 
-public class AnnotatedClassScanner implements ClassScanner {
+public class AnnotatedClassScanner implements ClassScanner<Set<Class<?>>> {
 
     private String basePackage;
     private Class<? extends Annotation> annotationType;
