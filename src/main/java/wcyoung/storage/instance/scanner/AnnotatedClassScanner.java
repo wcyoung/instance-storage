@@ -1,10 +1,10 @@
 package wcyoung.storage.instance.scanner;
 
-import java.lang.annotation.Annotation;
-import java.util.Set;
-
 import org.reflections.Reflections;
 import org.reflections.scanners.TypeAnnotationsScanner;
+
+import java.lang.annotation.Annotation;
+import java.util.Set;
 
 public class AnnotatedClassScanner extends AbstractAnnotatedClassScanner<Set<Class<?>>> {
 
