@@ -6,14 +6,10 @@ import java.util.Set;
 import org.reflections.Reflections;
 import org.reflections.scanners.TypeAnnotationsScanner;
 
-public class AnnotatedClassScanner implements ClassScanner<Set<Class<?>>> {
-
-    private String basePackage;
-    private Class<? extends Annotation> annotationType;
+public class AnnotatedClassScanner extends AbstractAnnotatedClassScanner<Set<Class<?>>> {
 
     public AnnotatedClassScanner(String basePackage, Class<? extends Annotation> annotationType) {
-        this.basePackage = basePackage;
-        this.annotationType = annotationType;
+        super(basePackage, annotationType);
     }
 
     @Override
