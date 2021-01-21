@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import wcyoung.storage.instance.classes.ClassA;
 
+import java.util.Set;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class NameStorageTest {
@@ -30,6 +32,14 @@ class NameStorageTest {
         void testGet() {
             assertNotNull(storage.get("classA"));
             assertNull(storage.get("classB"));
+        }
+
+        @Test
+        void testKeys() {
+            Set<String> keys = storage.keys();
+
+            String[] expectedKeys = {"classA"};
+            assertArrayEquals(expectedKeys, keys.toArray(new String[0]));
         }
 
         @Test
