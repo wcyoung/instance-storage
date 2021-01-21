@@ -1,5 +1,7 @@
 package wcyoung.storage.instance;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.Supplier;
@@ -21,6 +23,11 @@ public class NameStorage implements Storage<String, Object> {
     @Override
     public <T> T get(String key) {
         return (T) INSTANCES.get(key);
+    }
+
+    @Override
+    public Set<String> keys() {
+        return new HashSet<>(INSTANCES.keySet());
     }
 
     @Override

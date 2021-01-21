@@ -1,5 +1,6 @@
 package wcyoung.storage.instance;
 
+import java.util.Set;
 import java.util.function.Supplier;
 
 public interface Storage<K, V> {
@@ -7,6 +8,8 @@ public interface Storage<K, V> {
     boolean has(K key);
 
     <T> T get(K key);
+
+    Set<K> keys();
 
     int size();
 
