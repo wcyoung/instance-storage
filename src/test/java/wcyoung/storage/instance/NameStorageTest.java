@@ -37,7 +37,7 @@ class NameStorageTest {
         @Test
         void testGetWithType() {
             assertNotNull(storage.get("classA", ClassA.class));
-            assertEquals(ClassA.class, storage.get("classA", ClassA.class).getClass());
+            assertSame(ClassA.class, storage.get("classA", ClassA.class).getClass());
             assertNull(storage.get("classB"));
         }
 

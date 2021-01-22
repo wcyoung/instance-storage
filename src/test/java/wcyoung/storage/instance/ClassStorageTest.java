@@ -42,7 +42,7 @@ class ClassStorageTest {
         @Test
         void testGetWithType() {
             assertNotNull(storage.get(ClassA.class, ClassA.class));
-            assertEquals(ClassA.class, storage.get(ClassA.class, ClassA.class).getClass());
+            assertSame(ClassA.class, storage.get(ClassA.class, ClassA.class).getClass());
             assertNull(storage.get(ClassB.class));
         }
 
