@@ -40,6 +40,13 @@ class ClassStorageTest {
         }
 
         @Test
+        void testGetWithType() {
+            assertNotNull(storage.get(ClassA.class, ClassA.class));
+            assertEquals(ClassA.class, storage.get(ClassA.class, ClassA.class).getClass());
+            assertNull(storage.get(ClassB.class));
+        }
+
+        @Test
         void testKeys() {
             Set<Class<?>> keys = storage.keys();
 
