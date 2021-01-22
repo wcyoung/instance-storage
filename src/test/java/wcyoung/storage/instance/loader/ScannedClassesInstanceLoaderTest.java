@@ -24,8 +24,8 @@ class ScannedClassesInstanceLoaderTest {
             }
         };
 
-        ScannedClassesInstanceLoader loader = new ScannedClassesInstanceLoader(storage, scanner);
-        boolean isLoaded = loader.load();
+        ScannedClassesInstanceLoader loader = new ScannedClassesInstanceLoader(scanner);
+        boolean isLoaded = loader.load(storage);
         assertTrue(isLoaded);
         assertTrue(storage.has(ClassA.class));
     }
@@ -39,8 +39,8 @@ class ScannedClassesInstanceLoaderTest {
             }
         };
 
-        ScannedClassesInstanceLoader loader = new ScannedClassesInstanceLoader(null, scanner);
-        boolean isLoaded = loader.load();
+        ScannedClassesInstanceLoader loader = new ScannedClassesInstanceLoader(scanner);
+        boolean isLoaded = loader.load(null);
         assertFalse(isLoaded);
     }
 
@@ -48,8 +48,8 @@ class ScannedClassesInstanceLoaderTest {
     void loadFailBecauseClassesNull() {
         ClassStorage storage = new ClassStorage();
 
-        ScannedClassesInstanceLoader loader = new ScannedClassesInstanceLoader(storage, null);
-        boolean isLoaded = loader.load();
+        ScannedClassesInstanceLoader loader = new ScannedClassesInstanceLoader(null);
+        boolean isLoaded = loader.load(storage);
         assertFalse(isLoaded);
     }
 

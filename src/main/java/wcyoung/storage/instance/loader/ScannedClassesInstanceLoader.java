@@ -6,18 +6,16 @@ import wcyoung.storage.instance.scanner.ClassScanner;
 
 import java.util.Set;
 
-public class ScannedClassesInstanceLoader implements InstanceLoader {
+public class ScannedClassesInstanceLoader implements InstanceLoader<Class<?>, Object> {
 
-    private Storage<Class<?>, Object> storage;
     private ClassScanner<Set<Class<?>>> scanner;
 
-    public ScannedClassesInstanceLoader(Storage<Class<?>, Object> storage, ClassScanner<Set<Class<?>>> scanner) {
-        this.storage = storage;
+    public ScannedClassesInstanceLoader(ClassScanner<Set<Class<?>>> scanner) {
         this.scanner = scanner;
     }
 
     @Override
-    public boolean load() {
+    public boolean load(Storage<Class<?>, Object> storage) {
         if (storage == null || scanner == null) {
             return false;
         }

@@ -5,18 +5,16 @@ import wcyoung.storage.instance.generator.InstanceGenerator;
 
 import java.util.Set;
 
-public class ClassesInstanceLoader implements InstanceLoader {
+public class ClassesInstanceLoader implements InstanceLoader<Class<?>, Object> {
 
-    private Storage<Class<?>, Object> storage;
     private Set<Class<?>> classes;
 
-    public ClassesInstanceLoader(Storage<Class<?>, Object> storage, Set<Class<?>> classes) {
-        this.storage = storage;
+    public ClassesInstanceLoader(Set<Class<?>> classes) {
         this.classes = classes;
     }
 
     @Override
-    public boolean load() {
+    public boolean load(Storage<Class<?>, Object> storage) {
         if (storage == null || classes == null) {
             return false;
         }
