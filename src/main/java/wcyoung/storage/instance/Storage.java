@@ -9,6 +9,8 @@ public interface Storage<K, V> {
 
     <T> T get(K key);
 
+    <T> T get(K key, Class<T> type);
+
     Set<K> keys();
 
     int size();

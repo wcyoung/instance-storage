@@ -26,6 +26,11 @@ public class ClassStorage implements Storage<Class<?>, Object> {
     }
 
     @Override
+    public <T> T get(Class<?> key, Class<T> type) {
+        return (T) INSTANCES.get(key);
+    }
+
+    @Override
     public Set<Class<?>> keys() {
         return new HashSet<>(INSTANCES.keySet());
     }

@@ -26,6 +26,11 @@ public class NameStorage implements Storage<String, Object> {
     }
 
     @Override
+    public <T> T get(String key, Class<T> type) {
+        return (T) INSTANCES.get(key);
+    }
+
+    @Override
     public Set<String> keys() {
         return new HashSet<>(INSTANCES.keySet());
     }
