@@ -4,7 +4,7 @@ import wcyoung.storage.instance.loader.InstanceLoader;
 
 public class StorageManager {
 
-    private static StorageManager INSTANCE;
+    private static StorageManager instance;
 
     private final ClassStorage storage;
 
@@ -13,11 +13,11 @@ public class StorageManager {
     }
 
     public static StorageManager getInstance() {
-        if (INSTANCE == null) {
+        if (instance == null) {
             throw new StorageInitializeException("StorageManager is not initialized yet.");
         }
 
-        return INSTANCE;
+        return instance;
     }
 
     public ClassStorage get() {
@@ -35,14 +35,22 @@ public class StorageManager {
         }
 
         public StorageManager initialize() {
+            if (instance != null) {
+                throw new StorageInitializeException("StorageManager has already been initialized.");
+            }
+
             boolean isLoaded = loader.load(storage);
             if (!isLoaded) {
                 throw new StorageInitializeException("Loading failed while storage initialization.");
             }
 
-            INSTANCE = new StorageManager(storage);
+            instance = new StorageManager(storage);
 
-            return INSTANCE;
+            return instance;
+        }
+
+        public boolean isInitialized() {
+            return instance != null;
         }
 
     }
