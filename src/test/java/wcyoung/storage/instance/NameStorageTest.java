@@ -23,26 +23,26 @@ class NameStorageTest {
         }
 
         @Test
-        void testHas() {
+        void has() {
             assertTrue(storage.has("classA"));
             assertFalse(storage.has("classB"));
         }
 
         @Test
-        void testGet() {
+        void get() {
             assertNotNull(storage.get("classA"));
             assertNull(storage.get("classB"));
         }
 
         @Test
-        void testGetWithType() {
+        void getWithType() {
             assertNotNull(storage.get("classA", ClassA.class));
             assertSame(ClassA.class, storage.get("classA", ClassA.class).getClass());
             assertNull(storage.get("classB"));
         }
 
         @Test
-        void testKeys() {
+        void keys() {
             Set<String> keys = storage.keys();
 
             String[] expectedKeys = {"classA"};
@@ -50,40 +50,40 @@ class NameStorageTest {
         }
 
         @Test
-        void testSize() {
+        void size() {
             assertEquals(1, storage.size());
         }
 
         @Test
-        void testAddObjectFail() {
+        void addObjectFail() {
             boolean isAdded = storage.add(new ClassA());
             assertFalse(isAdded);
             assertTrue(storage.has("classA"));
         }
 
         @Test
-        void testAddObjectWithClassFail() {
+        void addObjectWithClassFail() {
             boolean isAdded = storage.add("classA", new ClassA());
             assertFalse(isAdded);
             assertTrue(storage.has("classA"));
         }
 
         @Test
-        void testAddObjectThroughSupplierFail() {
+        void addObjectThroughSupplierFail() {
             boolean isAdded = storage.add(ClassA::new);
             assertFalse(isAdded);
             assertTrue(storage.has("classA"));
         }
 
         @Test
-        void testAddObjectWithClassThroughSupplierFail() {
+        void addObjectWithClassThroughSupplierFail() {
             boolean isAdded = storage.add("classA", ClassA::new);
             assertFalse(isAdded);
             assertTrue(storage.has("classA"));
         }
 
         @Test
-        void testReplace() {
+        void replace() {
             ClassA classA = storage.get("classA");
             storage.replace("classA", new ClassA());
             ClassA newClassA = storage.get("classA");
@@ -93,7 +93,7 @@ class NameStorageTest {
         }
 
         @Test
-        void testReplaceThroughSupplier() {
+        void replaceThroughSupplier() {
             ClassA classA = storage.get("classA");
             storage.replace("classA", ClassA::new);
             ClassA newClassA = storage.get("classA");
@@ -103,14 +103,14 @@ class NameStorageTest {
         }
 
         @Test
-        void testRemove() {
+        void remove() {
             boolean isRemoved = storage.remove("classA");
             assertTrue(isRemoved);
             assertFalse(storage.has("classA"));
         }
 
         @Test
-        void testClear() {
+        void clear() {
             storage.clear();
             assertEquals(0, storage.size());
         }
@@ -126,49 +126,49 @@ class NameStorageTest {
         }
 
         @Test
-        void testAddObject() {
+        void addObject() {
             boolean isAdded = storage.add(new ClassA());
             assertTrue(isAdded);
             assertTrue(storage.has("classA"));
         }
 
         @Test
-        void testAddObjectWithClass() {
+        void addObjectWithClass() {
             boolean isAdded = storage.add("classA", new ClassA());
             assertTrue(isAdded);
             assertTrue(storage.has("classA"));
         }
 
         @Test
-        void testAddObjectThroughSupplier() {
+        void addObjectThroughSupplier() {
             boolean isAdded = storage.add(ClassA::new);
             assertTrue(isAdded);
             assertTrue(storage.has("classA"));
         }
 
         @Test
-        void testAddObjectWithClassThroughSupplier() {
+        void addObjectWithClassThroughSupplier() {
             boolean isAdded = storage.add("classA", ClassA::new);
             assertTrue(isAdded);
             assertTrue(storage.has("classA"));
         }
 
         @Test
-        void testReplaceFail() {
+        void replaceFail() {
             boolean isReplaced = storage.replace("classA", new ClassA());
             assertFalse(isReplaced);
             assertFalse(storage.has("classA"));
         }
 
         @Test
-        void testReplaceThroughSupplierFail() {
+        void replaceThroughSupplierFail() {
             boolean isReplaced = storage.replace("classA", ClassA::new);
             assertFalse(isReplaced);
             assertFalse(storage.has("classA"));
         }
 
         @Test
-        void testRemove() {
+        void remove() {
             boolean isRemoved = storage.remove("classA");
             assertFalse(isRemoved);
             assertFalse(storage.has("classA"));
