@@ -17,8 +17,8 @@ class NamedClassesInstanceLoaderTest {
         Map<String, Class<?>> classes = new HashMap<>();
         classes.put("classA", ClassA.class);
 
-        NamedClassesInstanceLoader loader = new NamedClassesInstanceLoader(classes);
-        boolean isLoaded = loader.load(storage);
+        NamedClassesInstanceLoader loader = new NamedClassesInstanceLoader(storage, classes);
+        boolean isLoaded = loader.load();
         assertTrue(isLoaded);
         assertTrue(storage.has("classA"));
     }
@@ -28,8 +28,8 @@ class NamedClassesInstanceLoaderTest {
         Map<String, Class<?>> classes = new HashMap<>();
         classes.put("classA", ClassA.class);
 
-        NamedClassesInstanceLoader loader = new NamedClassesInstanceLoader(classes);
-        boolean isLoaded = loader.load(null);
+        NamedClassesInstanceLoader loader = new NamedClassesInstanceLoader(null, classes);
+        boolean isLoaded = loader.load();
         assertFalse(isLoaded);
     }
 
@@ -37,8 +37,8 @@ class NamedClassesInstanceLoaderTest {
     void loadFailBecauseClassesNull() {
         NameStorage storage = new NameStorage();
 
-        NamedClassesInstanceLoader loader = new NamedClassesInstanceLoader(null);
-        boolean isLoaded = loader.load(storage);
+        NamedClassesInstanceLoader loader = new NamedClassesInstanceLoader(storage, null);
+        boolean isLoaded = loader.load();
         assertFalse(isLoaded);
     }
 

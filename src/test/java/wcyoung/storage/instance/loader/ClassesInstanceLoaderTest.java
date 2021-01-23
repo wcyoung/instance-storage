@@ -17,8 +17,8 @@ class ClassesInstanceLoaderTest {
         Set<Class<?>> classes = new HashSet<>();
         classes.add(ClassA.class);
 
-        ClassesInstanceLoader loader = new ClassesInstanceLoader(classes);
-        boolean isLoaded = loader.load(storage);
+        ClassesInstanceLoader loader = new ClassesInstanceLoader(storage, classes);
+        boolean isLoaded = loader.load();
         assertTrue(isLoaded);
         assertTrue(storage.has(ClassA.class));
     }
@@ -28,8 +28,8 @@ class ClassesInstanceLoaderTest {
         Set<Class<?>> classes = new HashSet<>();
         classes.add(ClassA.class);
 
-        ClassesInstanceLoader loader = new ClassesInstanceLoader(classes);
-        boolean isLoaded = loader.load(null);
+        ClassesInstanceLoader loader = new ClassesInstanceLoader(null, classes);
+        boolean isLoaded = loader.load();
         assertFalse(isLoaded);
     }
 
@@ -37,8 +37,8 @@ class ClassesInstanceLoaderTest {
     void loadFailBecauseClassesNull() {
         ClassStorage storage = new ClassStorage();
 
-        ClassesInstanceLoader loader = new ClassesInstanceLoader(null);
-        boolean isLoaded = loader.load(storage);
+        ClassesInstanceLoader loader = new ClassesInstanceLoader(storage, null);
+        boolean isLoaded = loader.load();
         assertFalse(isLoaded);
     }
 

@@ -6,16 +6,18 @@ import wcyoung.storage.instance.generator.InstanceGenerator;
 import java.util.Map;
 import java.util.Map.Entry;
 
-public class NamedClassesInstanceLoader implements InstanceLoader<String, Object> {
+public class NamedClassesInstanceLoader implements InstanceLoader {
 
+    private Storage<String, Object> storage;
     private Map<String, Class<?>> classes;
 
-    public NamedClassesInstanceLoader(Map<String, Class<?>> classes) {
+    public NamedClassesInstanceLoader(Storage<String, Object> storage, Map<String, Class<?>> classes) {
+        this.storage = storage;
         this.classes = classes;
     }
 
     @Override
-    public boolean load(Storage<String, Object> storage) {
+    public boolean load() {
         if (storage == null || classes == null) {
             return false;
         }
