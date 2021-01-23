@@ -6,13 +6,12 @@ import wcyoung.storage.instance.generator.InstanceGenerator;
 import java.util.Map;
 import java.util.Map.Entry;
 
-public class MappedClassesInstanceLoader implements InstanceLoader {
+public class MappedClassesInstanceLoader extends AbstractInstanceLoader<Class<?>, Object> {
 
-    private Storage<Class<?>, Object> storage;
     private Map<Class<?>, Class<?>> classes;
 
     public MappedClassesInstanceLoader(Storage<Class<?>, Object> storage, Map<Class<?>, Class<?>> classes) {
-        this.storage = storage;
+        super(storage);
         this.classes = classes;
     }
 

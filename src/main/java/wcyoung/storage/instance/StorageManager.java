@@ -1,6 +1,6 @@
 package wcyoung.storage.instance;
 
-import wcyoung.storage.instance.loader.InstanceLoader;
+import wcyoung.storage.instance.loader.AbstractInstanceLoader;
 
 public class StorageManager {
 
@@ -26,11 +26,9 @@ public class StorageManager {
 
     public static class StorageInitializer {
 
-        private ClassStorage storage;
-        private InstanceLoader loader;
+        private AbstractInstanceLoader loader;
 
-        public StorageInitializer(ClassStorage storage, InstanceLoader loader) {
-            this.storage = storage;
+        public StorageInitializer(AbstractInstanceLoader loader) {
             this.loader = loader;
         }
 
@@ -39,12 +37,12 @@ public class StorageManager {
                 throw new StorageInitializeException("StorageManager has already been initialized.");
             }
 
-            boolean isLoaded = loader.load(storage);
+            boolean isLoaded = loader.load();
             if (!isLoaded) {
                 throw new StorageInitializeException("Loading failed while storage initialization.");
             }
 
-            instance = new StorageManager(storage);
+            instance = new StorageManager((ClassStorage) loader.getStorage());
 
             return instance;
         }

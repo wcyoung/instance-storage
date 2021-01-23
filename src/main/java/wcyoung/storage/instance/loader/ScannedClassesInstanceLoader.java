@@ -6,13 +6,12 @@ import wcyoung.storage.instance.scanner.ClassScanner;
 
 import java.util.Set;
 
-public class ScannedClassesInstanceLoader implements InstanceLoader {
+public class ScannedClassesInstanceLoader extends AbstractInstanceLoader<Class<?>, Object> {
 
-    private Storage<Class<?>, Object> storage;
     private ClassScanner<Set<Class<?>>> scanner;
 
     public ScannedClassesInstanceLoader(Storage<Class<?>, Object> storage, ClassScanner<Set<Class<?>>> scanner) {
-        this.storage = storage;
+        super(storage);
         this.scanner = scanner;
     }
 

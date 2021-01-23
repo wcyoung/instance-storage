@@ -5,13 +5,12 @@ import wcyoung.storage.instance.generator.InstanceGenerator;
 
 import java.util.Set;
 
-public class ClassesInstanceLoader implements InstanceLoader {
+public class ClassesInstanceLoader extends AbstractInstanceLoader<Class<?>, Object> {
 
-    private Storage<Class<?>, Object> storage;
     private Set<Class<?>> classes;
 
     public ClassesInstanceLoader(Storage<Class<?>, Object> storage, Set<Class<?>> classes) {
-        this.storage = storage;
+        super(storage);
         this.classes = classes;
     }
 
