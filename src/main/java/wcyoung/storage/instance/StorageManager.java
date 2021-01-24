@@ -26,9 +26,9 @@ public class StorageManager {
 
     public static class StorageInitializer {
 
-        private AbstractInstanceLoader loader;
+        private AbstractInstanceLoader<Class<?>, Object> loader;
 
-        public StorageInitializer(AbstractInstanceLoader loader) {
+        public StorageInitializer(AbstractInstanceLoader<Class<?>, Object> loader) {
             this.loader = loader;
         }
 
