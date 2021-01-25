@@ -25,10 +25,9 @@ public class ClassStorage implements Storage<Class<?>, Object> {
         return (T) INSTANCES.get(key);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public <T> T get(Class<?> key, Class<T> type) {
-        return (T) INSTANCES.get(key);
+        return get(key);
     }
 
     @Override
