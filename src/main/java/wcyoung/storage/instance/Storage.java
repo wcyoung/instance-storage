@@ -23,6 +23,8 @@ public interface Storage<K, V> {
 
     boolean replace(K key, Supplier<?> supplier);
 
+    boolean merge(Storage<K, V> storage, boolean doOverride);
+
     boolean remove(K key);
 
     void clear();

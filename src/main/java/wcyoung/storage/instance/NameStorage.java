@@ -77,6 +77,36 @@ public class NameStorage implements Storage<String, Object> {
         return replace(key, supplier.get());
     }
 
+    public boolean merge(Storage<String, Object> storage) {
+        return merge(storage, false);
+    }
+
+    @Override
+    public boolean merge(Storage<String, Object> storage, boolean doOverride) {
+        if (storage == null) {
+            return false;
+        }
+
+        for (String key : storage.keys()) {
+            Object newInstance = storage.get(key);
+            if (newInstance == null) {
+                continue;
+            }
+
+            Object ownInstance = get(key);
+            if (ownInstance == null) {
+                add(key, newInstance);
+                continue;
+            }
+
+            if (doOverride) {
+                replace(key, newInstance);
+            }
+        }
+
+        return true;
+    }
+
     @Override
     public boolean remove(String key) {
         if (!has(key)) {
