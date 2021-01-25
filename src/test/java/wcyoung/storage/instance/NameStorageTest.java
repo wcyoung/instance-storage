@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import wcyoung.storage.instance.classes.ClassA;
+import wcyoung.storage.instance.classes.ClassB;
 
 import java.util.Set;
 
@@ -103,6 +104,36 @@ class NameStorageTest {
         }
 
         @Test
+        void merge() {
+            ClassA classA = storage.get("classA");
+
+            NameStorage storageToMerge = new NameStorage();
+            storageToMerge.add(new ClassA());
+            storageToMerge.add(new ClassB());
+
+            boolean isMerged = storage.merge(storageToMerge);
+            assertTrue(isMerged);
+
+            assertSame(classA, storage.get("classA"));
+            assertTrue(storage.has("classB"));
+        }
+
+        @Test
+        void mergeOverride() {
+            ClassA newClassA = new ClassA();
+
+            NameStorage storageToMerge = new NameStorage();
+            storageToMerge.add(newClassA);
+            storageToMerge.add(new ClassB());
+
+            boolean isMerged = storage.merge(storageToMerge, true);
+            assertTrue(isMerged);
+
+            assertSame(newClassA, storage.get("classA"));
+            assertTrue(storage.has("classB"));
+        }
+
+        @Test
         void remove() {
             boolean isRemoved = storage.remove("classA");
             assertTrue(isRemoved);
@@ -165,6 +196,16 @@ class NameStorageTest {
             boolean isReplaced = storage.replace("classA", ClassA::new);
             assertFalse(isReplaced);
             assertFalse(storage.has("classA"));
+        }
+
+        @Test
+        void mergeFail() {
+            assertFalse(storage.merge(null));
+        }
+
+        @Test
+        void mergeOverrideFail() {
+            assertFalse(storage.merge(null, true));
         }
 
         @Test

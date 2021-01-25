@@ -108,6 +108,36 @@ class ClassStorageTest {
         }
 
         @Test
+        void merge() {
+            ClassA classA = storage.get(ClassA.class);
+
+            ClassStorage storageToMerge = new ClassStorage();
+            storageToMerge.add(new ClassA());
+            storageToMerge.add(new ClassB());
+
+            boolean isMerged = storage.merge(storageToMerge);
+            assertTrue(isMerged);
+
+            assertSame(classA, storage.get(ClassA.class));
+            assertTrue(storage.has(ClassB.class));
+        }
+
+        @Test
+        void mergeOverride() {
+            ClassA newClassA = new ClassA();
+
+            ClassStorage storageToMerge = new ClassStorage();
+            storageToMerge.add(newClassA);
+            storageToMerge.add(new ClassB());
+
+            boolean isMerged = storage.merge(storageToMerge, true);
+            assertTrue(isMerged);
+
+            assertSame(newClassA, storage.get(ClassA.class));
+            assertTrue(storage.has(ClassB.class));
+        }
+
+        @Test
         void remove() {
             boolean isRemoved = storage.remove(ClassA.class);
             assertTrue(isRemoved);
@@ -165,6 +195,16 @@ class ClassStorageTest {
             boolean isReplaced = storage.replace(ClassA.class, ClassA::new);
             assertFalse(isReplaced);
             assertFalse(storage.has(ClassA.class));
+        }
+
+        @Test
+        void mergeFail() {
+            assertFalse(storage.merge(null));
+        }
+
+        @Test
+        void mergeOverrideFail() {
+            assertFalse(storage.merge(null, true));
         }
 
         @Test
