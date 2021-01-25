@@ -6,22 +6,26 @@ public class StorageManager {
 
     private static StorageManager instance;
 
-    private final ClassStorage storage;
+    private final ClassStorage STORAGE;
 
     private StorageManager(ClassStorage storage) {
-        this.storage = storage;
+        this.STORAGE = storage;
     }
 
     public static StorageManager getInstance() {
-        if (instance == null) {
+        if (!isInitialized()) {
             throw new StorageInitializeException("StorageManager is not initialized yet.");
         }
 
         return instance;
     }
 
+    public static boolean isInitialized() {
+        return instance != null;
+    }
+
     public ClassStorage get() {
-        return storage;
+        return STORAGE;
     }
 
     public static class StorageInitializer {
@@ -33,7 +37,7 @@ public class StorageManager {
         }
 
         public StorageManager initialize() {
-            if (instance != null) {
+            if (isInitialized()) {
                 throw new StorageInitializeException("StorageManager has already been initialized.");
             }
 
@@ -45,10 +49,6 @@ public class StorageManager {
             instance = new StorageManager((ClassStorage) loader.getStorage());
 
             return instance;
-        }
-
-        public boolean isInitialized() {
-            return instance != null;
         }
 
     }
