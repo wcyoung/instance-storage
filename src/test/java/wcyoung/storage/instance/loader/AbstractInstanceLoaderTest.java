@@ -10,7 +10,7 @@ class AbstractInstanceLoaderTest {
     @Test
     void getStorage() {
         ClassStorage storage = new ClassStorage();
-        AbstractInstanceLoader loader = new AbstractInstanceLoader(storage) {
+        AbstractInstanceLoader<Class<?>, Object> loader = new AbstractInstanceLoader<Class<?>, Object>(storage) {
             @Override
             public boolean load() {
                 return false;
@@ -23,7 +23,7 @@ class AbstractInstanceLoaderTest {
     @Test
     void loadAndGetStorage() {
         ClassStorage storage = new ClassStorage();
-        AbstractInstanceLoader loader = new AbstractInstanceLoader(storage) {
+        AbstractInstanceLoader<Class<?>, Object> loader = new AbstractInstanceLoader<Class<?>, Object>(storage) {
             @Override
             public boolean load() {
                 return true;
@@ -35,7 +35,7 @@ class AbstractInstanceLoaderTest {
 
     @Test
     void loadAndGetNull() {
-        AbstractInstanceLoader loader = new AbstractInstanceLoader(null) {
+        AbstractInstanceLoader<Class<?>, Object> loader = new AbstractInstanceLoader<Class<?>, Object>(null) {
             @Override
             public boolean load() {
                 return false;

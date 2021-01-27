@@ -2,6 +2,8 @@ package wcyoung.storage.instance.generator;
 
 public class InstanceGenerateException extends RuntimeException {
 
+    private static final long serialVersionUID = 4339245518434536323L;
+
     public InstanceGenerateException() {
         super();
     }
