@@ -19,11 +19,13 @@ public class InstanceGenerator {
 
         int modifiers = clazz.getModifiers();
         if (Modifier.isInterface(modifiers)) {
-            throw new InstanceGenerateException("Unable to generate " + clazz + " instance. Because it is an interface.");
+            throw new InstanceGenerateException(
+                    "Unable to generate " + clazz + " instance. Because it is an interface.");
         }
 
         if (Modifier.isAbstract(modifiers)) {
-            throw new InstanceGenerateException("Unable to generate " + clazz + " instance. Because it is an abstract class.");
+            throw new InstanceGenerateException(
+                    "Unable to generate " + clazz + " instance. Because it is an abstract class.");
         }
 
         try {
