@@ -28,6 +28,13 @@ class ClassStorageTest {
         }
 
         @Test
+        void copy() {
+            ClassStorage copiedStorage = new ClassStorage(storage);
+            assertNotSame(storage, copiedStorage);
+            assertTrue(copiedStorage.has(ClassA.class));
+        }
+
+        @Test
         void has() {
             assertTrue(storage.has(ClassA.class));
             assertFalse(storage.has(ClassB.class));
