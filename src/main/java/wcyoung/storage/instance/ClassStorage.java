@@ -14,6 +14,10 @@ public class ClassStorage implements Storage<Class<?>, Object> {
         INSTANCES = new ConcurrentHashMap<>();
     }
 
+    public ClassStorage(ClassStorage storage) {
+        INSTANCES = new ConcurrentHashMap<>(storage.INSTANCES);
+    }
+
     @Override
     public boolean has(Class<?> key) {
         return INSTANCES.containsKey(key);

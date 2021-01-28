@@ -14,6 +14,10 @@ public class NameStorage implements Storage<String, Object> {
         INSTANCES = new ConcurrentHashMap<>();
     }
 
+    public NameStorage(NameStorage storage) {
+        INSTANCES = new ConcurrentHashMap<>(storage.INSTANCES);
+    }
+
     @Override
     public boolean has(String key) {
         return INSTANCES.containsKey(key);
