@@ -40,7 +40,8 @@ public class ClassesDependencyCollector implements DependencyCollector<Map<Class
             Constructor<?> constructor = InstanceGenerator.findConstructor(clazz);
             for (Class<?> parameterType : constructor.getParameterTypes()) {
                 if (parameterTypes.contains(parameterType)) {
-                    throw new DependencyCollectException("Duplicate dependencies exist. " + clazz + " -> " + parameterType);
+                    throw new DependencyCollectException(
+                            "Duplicate dependencies exist. " + clazz + " -> " + parameterType);
                 }
 
                 parameterTypes.add(parameterType);

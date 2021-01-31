@@ -15,12 +15,14 @@ public class DependentClassesInstanceLoader extends AbstractInstanceLoader<Class
     private Map<Class<?>, Set<Class<?>>> dependencies;
     private DependencyCollector<Map<Class<?>, Set<Class<?>>>> collector;
 
-    public DependentClassesInstanceLoader(Storage<Class<?>, Object> storage, Map<Class<?>, Set<Class<?>>> dependencies) {
+    public DependentClassesInstanceLoader(Storage<Class<?>, Object> storage,
+                                          Map<Class<?>, Set<Class<?>>> dependencies) {
         super(storage);
         this.dependencies = dependencies;
     }
 
-    public DependentClassesInstanceLoader(Storage<Class<?>, Object> storage, DependencyCollector<Map<Class<?>, Set<Class<?>>>> collector) {
+    public DependentClassesInstanceLoader(Storage<Class<?>, Object> storage,
+                                          DependencyCollector<Map<Class<?>, Set<Class<?>>>> collector) {
         super(storage);
         this.collector = collector;
     }
