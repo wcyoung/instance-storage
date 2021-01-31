@@ -6,17 +6,17 @@ import wcyoung.storage.instance.scanner.ClassScanner;
 
 import java.util.Map;
 
-public class NamedClassesInstanceLoader extends AbstractInstanceLoader<String, Object> {
+public class NamedClassesLoader extends AbstractStorageLoader<String, Object> {
 
     private Map<String, Class<?>> classes;
     private ClassScanner<Map<String, Class<?>>> scanner;
 
-    public NamedClassesInstanceLoader(Storage<String, Object> storage, Map<String, Class<?>> classes) {
+    public NamedClassesLoader(Storage<String, Object> storage, Map<String, Class<?>> classes) {
         super(storage);
         this.classes = classes;
     }
 
-    public NamedClassesInstanceLoader(Storage<String, Object> storage, ClassScanner<Map<String, Class<?>>> scanner) {
+    public NamedClassesLoader(Storage<String, Object> storage, ClassScanner<Map<String, Class<?>>> scanner) {
         super(storage);
         this.scanner = scanner;
     }

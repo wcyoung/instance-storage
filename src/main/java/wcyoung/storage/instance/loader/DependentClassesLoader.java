@@ -9,19 +9,18 @@ import wcyoung.storage.instance.Storage;
 import wcyoung.storage.instance.collector.DependencyCollector;
 import wcyoung.storage.instance.generator.InstanceGenerator;
 
-public class DependentClassesInstanceLoader extends AbstractInstanceLoader<Class<?>, Object> {
+public class DependentClassesLoader extends AbstractStorageLoader<Class<?>, Object> {
 
     private Map<Class<?>, Set<Class<?>>> dependencies;
     private DependencyCollector<Map<Class<?>, Set<Class<?>>>> collector;
 
-    public DependentClassesInstanceLoader(Storage<Class<?>, Object> storage,
-                                          Map<Class<?>, Set<Class<?>>> dependencies) {
+    public DependentClassesLoader(Storage<Class<?>, Object> storage, Map<Class<?>, Set<Class<?>>> dependencies) {
         super(storage);
         this.dependencies = dependencies;
     }
 
-    public DependentClassesInstanceLoader(Storage<Class<?>, Object> storage,
-                                          DependencyCollector<Map<Class<?>, Set<Class<?>>>> collector) {
+    public DependentClassesLoader(Storage<Class<?>, Object> storage,
+                                  DependencyCollector<Map<Class<?>, Set<Class<?>>>> collector) {
         super(storage);
         this.collector = collector;
     }

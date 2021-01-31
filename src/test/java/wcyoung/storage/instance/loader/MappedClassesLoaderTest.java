@@ -9,7 +9,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class MappedClassesInstanceLoaderTest {
+class MappedClassesLoaderTest {
 
     @Test
     void load() {
@@ -17,7 +17,7 @@ class MappedClassesInstanceLoaderTest {
         Map<Class<?>, Class<?>> classes = new HashMap<>();
         classes.put(ClassA.class, ClassA.class);
 
-        MappedClassesInstanceLoader loader = new MappedClassesInstanceLoader(storage, classes);
+        MappedClassesLoader loader = new MappedClassesLoader(storage, classes);
         boolean isLoaded = loader.load();
         assertTrue(isLoaded);
         assertTrue(storage.has(ClassA.class));
@@ -28,7 +28,7 @@ class MappedClassesInstanceLoaderTest {
         Map<Class<?>, Class<?>> classes = new HashMap<>();
         classes.put(ClassA.class, ClassA.class);
 
-        MappedClassesInstanceLoader loader = new MappedClassesInstanceLoader(null, classes);
+        MappedClassesLoader loader = new MappedClassesLoader(null, classes);
         boolean isLoaded = loader.load();
         assertFalse(isLoaded);
     }
@@ -37,7 +37,7 @@ class MappedClassesInstanceLoaderTest {
     void loadFailBecauseClassesNull() {
         ClassStorage storage = new ClassStorage();
 
-        MappedClassesInstanceLoader loader = new MappedClassesInstanceLoader(storage, (Map<Class<?>, Class<?>>) null);
+        MappedClassesLoader loader = new MappedClassesLoader(storage, (Map<Class<?>, Class<?>>) null);
         boolean isLoaded = loader.load();
         assertFalse(isLoaded);
     }

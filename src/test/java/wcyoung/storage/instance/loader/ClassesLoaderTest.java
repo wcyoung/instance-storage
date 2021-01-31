@@ -9,7 +9,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ClassesInstanceLoaderTest {
+class ClassesLoaderTest {
 
     @Test
     void load() {
@@ -17,7 +17,7 @@ class ClassesInstanceLoaderTest {
         Set<Class<?>> classes = new HashSet<>();
         classes.add(ClassA.class);
 
-        ClassesInstanceLoader loader = new ClassesInstanceLoader(storage, classes);
+        ClassesLoader loader = new ClassesLoader(storage, classes);
         boolean isLoaded = loader.load();
         assertTrue(isLoaded);
         assertTrue(storage.has(ClassA.class));
@@ -28,7 +28,7 @@ class ClassesInstanceLoaderTest {
         Set<Class<?>> classes = new HashSet<>();
         classes.add(ClassA.class);
 
-        ClassesInstanceLoader loader = new ClassesInstanceLoader(null, classes);
+        ClassesLoader loader = new ClassesLoader(null, classes);
         boolean isLoaded = loader.load();
         assertFalse(isLoaded);
     }
@@ -37,7 +37,7 @@ class ClassesInstanceLoaderTest {
     void loadFailBecauseClassesNull() {
         ClassStorage storage = new ClassStorage();
 
-        ClassesInstanceLoader loader = new ClassesInstanceLoader(storage, (Set<Class<?>>) null);
+        ClassesLoader loader = new ClassesLoader(storage, (Set<Class<?>>) null);
         boolean isLoaded = loader.load();
         assertFalse(isLoaded);
     }

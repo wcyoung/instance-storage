@@ -1,6 +1,6 @@
 package wcyoung.storage.instance.loader;
 
-public interface InstanceLoader {
+public interface StorageLoader {
 
     boolean load();
 

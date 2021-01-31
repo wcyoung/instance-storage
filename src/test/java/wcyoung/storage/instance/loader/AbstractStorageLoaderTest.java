@@ -5,12 +5,12 @@ import wcyoung.storage.instance.ClassStorage;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class AbstractInstanceLoaderTest {
+class AbstractStorageLoaderTest {
 
     @Test
     void getStorage() {
         ClassStorage storage = new ClassStorage();
-        AbstractInstanceLoader<Class<?>, Object> loader = new AbstractInstanceLoader<Class<?>, Object>(storage) {
+        AbstractStorageLoader<Class<?>, Object> loader = new AbstractStorageLoader<Class<?>, Object>(storage) {
             @Override
             public boolean load() {
                 return false;
@@ -23,7 +23,7 @@ class AbstractInstanceLoaderTest {
     @Test
     void loadAndGetStorage() {
         ClassStorage storage = new ClassStorage();
-        AbstractInstanceLoader<Class<?>, Object> loader = new AbstractInstanceLoader<Class<?>, Object>(storage) {
+        AbstractStorageLoader<Class<?>, Object> loader = new AbstractStorageLoader<Class<?>, Object>(storage) {
             @Override
             public boolean load() {
                 return true;
@@ -35,7 +35,7 @@ class AbstractInstanceLoaderTest {
 
     @Test
     void loadAndGetNull() {
-        AbstractInstanceLoader<Class<?>, Object> loader = new AbstractInstanceLoader<Class<?>, Object>(null) {
+        AbstractStorageLoader<Class<?>, Object> loader = new AbstractStorageLoader<Class<?>, Object>(null) {
             @Override
             public boolean load() {
                 return false;

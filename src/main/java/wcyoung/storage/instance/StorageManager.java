@@ -1,6 +1,6 @@
 package wcyoung.storage.instance;
 
-import wcyoung.storage.instance.loader.AbstractInstanceLoader;
+import wcyoung.storage.instance.loader.AbstractStorageLoader;
 
 public class StorageManager {
 
@@ -30,9 +30,9 @@ public class StorageManager {
 
     public static class StorageInitializer {
 
-        private AbstractInstanceLoader<Class<?>, Object> loader;
+        private AbstractStorageLoader<Class<?>, Object> loader;
 
-        public StorageInitializer(AbstractInstanceLoader<Class<?>, Object> loader) {
+        public StorageInitializer(AbstractStorageLoader<Class<?>, Object> loader) {
             this.loader = loader;
         }
 
