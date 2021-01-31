@@ -3,7 +3,6 @@ package wcyoung.storage.instance.loader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import wcyoung.storage.instance.Storage;
@@ -41,7 +40,7 @@ public class DependentClassesInstanceLoader extends AbstractInstanceLoader<Class
             return false;
         }
 
-        for (Entry<Class<?>, Set<Class<?>>> entry : dependencies.entrySet()) {
+        for (Map.Entry<Class<?>, Set<Class<?>>> entry : dependencies.entrySet()) {
             Class<?> clazz = entry.getKey();
             if (storage.has(clazz)) {
                 continue;

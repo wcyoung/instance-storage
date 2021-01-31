@@ -4,7 +4,6 @@ import wcyoung.storage.instance.Storage;
 import wcyoung.storage.instance.generator.InstanceGenerator;
 
 import java.util.Map;
-import java.util.Map.Entry;
 
 public class MappedClassesInstanceLoader extends AbstractInstanceLoader<Class<?>, Object> {
 
@@ -21,7 +20,7 @@ public class MappedClassesInstanceLoader extends AbstractInstanceLoader<Class<?>
             return false;
         }
 
-        for (Entry<Class<?>, Class<?>> entry : classes.entrySet()) {
+        for (Map.Entry<Class<?>, Class<?>> entry : classes.entrySet()) {
             Object instance = InstanceGenerator.generate(entry.getValue());
             storage.add(entry.getKey(), instance);
         }
