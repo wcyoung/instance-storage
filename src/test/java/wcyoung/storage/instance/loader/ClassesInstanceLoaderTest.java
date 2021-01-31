@@ -37,7 +37,7 @@ class ClassesInstanceLoaderTest {
     void loadFailBecauseClassesNull() {
         ClassStorage storage = new ClassStorage();
 
-        ClassesInstanceLoader loader = new ClassesInstanceLoader(storage, null);
+        ClassesInstanceLoader loader = new ClassesInstanceLoader(storage, (Set<Class<?>>) null);
         boolean isLoaded = loader.load();
         assertFalse(isLoaded);
     }

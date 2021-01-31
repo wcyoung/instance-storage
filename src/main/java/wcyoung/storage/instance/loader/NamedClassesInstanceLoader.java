@@ -2,21 +2,36 @@ package wcyoung.storage.instance.loader;
 
 import wcyoung.storage.instance.Storage;
 import wcyoung.storage.instance.generator.InstanceGenerator;
+import wcyoung.storage.instance.scanner.ClassScanner;
 
 import java.util.Map;
 
 public class NamedClassesInstanceLoader extends AbstractInstanceLoader<String, Object> {
 
     private Map<String, Class<?>> classes;
+    private ClassScanner<Map<String, Class<?>>> scanner;
 
     public NamedClassesInstanceLoader(Storage<String, Object> storage, Map<String, Class<?>> classes) {
         super(storage);
         this.classes = classes;
     }
 
+    public NamedClassesInstanceLoader(Storage<String, Object> storage, ClassScanner<Map<String, Class<?>>> scanner) {
+        super(storage);
+        this.scanner = scanner;
+    }
+
     @Override
     public boolean load() {
-        if (storage == null || classes == null) {
+        if (storage == null) {
+            return false;
+        }
+
+        if (scanner != null) {
+            classes = scanner.scan();
+        }
+
+        if (classes == null) {
             return false;
         }
 

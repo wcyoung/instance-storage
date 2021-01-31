@@ -37,7 +37,7 @@ class MappedClassesInstanceLoaderTest {
     void loadFailBecauseClassesNull() {
         ClassStorage storage = new ClassStorage();
 
-        MappedClassesInstanceLoader loader = new MappedClassesInstanceLoader(storage, null);
+        MappedClassesInstanceLoader loader = new MappedClassesInstanceLoader(storage, (Map<Class<?>, Class<?>>) null);
         boolean isLoaded = loader.load();
         assertFalse(isLoaded);
     }

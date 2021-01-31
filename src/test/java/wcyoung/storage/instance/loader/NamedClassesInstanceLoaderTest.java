@@ -37,7 +37,7 @@ class NamedClassesInstanceLoaderTest {
     void loadFailBecauseClassesNull() {
         NameStorage storage = new NameStorage();
 
-        NamedClassesInstanceLoader loader = new NamedClassesInstanceLoader(storage, null);
+        NamedClassesInstanceLoader loader = new NamedClassesInstanceLoader(storage, (Map<String, Class<?>>) null);
         boolean isLoaded = loader.load();
         assertFalse(isLoaded);
     }
