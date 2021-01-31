@@ -34,7 +34,7 @@ public class ClassesDependencyCollector implements DependencyCollector<Map<Class
 
         Map<Class<?>, Set<Class<?>>> dependencies = new HashMap<>();
 
-        classes.stream().forEach(clazz -> {
+        classes.forEach(clazz -> {
             Set<Class<?>> parameterTypes = new HashSet<>();
 
             Constructor<?> constructor = InstanceGenerator.findConstructor(clazz);

@@ -92,9 +92,7 @@ public class DependentClassesInstanceLoader extends AbstractInstanceLoader<Class
         sb.append("┌─────┐\n");
 
         String[] classes = circularReferences.stream()
-                .map(clazz -> {
-                    return "↑    " + clazz + "\n";
-                    })
+                .map(clazz -> "↑    " + clazz + "\n")
                 .toArray(String[]::new);
 
         sb.append(String.join("│     ↓\n", classes));
