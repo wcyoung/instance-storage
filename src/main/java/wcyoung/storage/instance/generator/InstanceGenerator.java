@@ -15,18 +15,7 @@ public class InstanceGenerator {
 
     @SuppressWarnings("unchecked")
     public static <T> T generate(Constructor<?> constructor, Object... parameters) {
-        Class<?> clazz = constructor.getDeclaringClass();
-
-        int modifiers = clazz.getModifiers();
-        if (Modifier.isInterface(modifiers)) {
-            throw new InstanceGenerateException(
-                    "Unable to generate " + clazz + " instance. Because it is an interface.");
-        }
-
-        if (Modifier.isAbstract(modifiers)) {
-            throw new InstanceGenerateException(
-                    "Unable to generate " + clazz + " instance. Because it is an abstract class.");
-        }
+        assertCanGenerate(constructor.getDeclaringClass());
 
         try {
             return (T) constructor.newInstance(parameters);
@@ -37,6 +26,8 @@ public class InstanceGenerator {
     }
 
     public static Constructor<?> findConstructor(Class<?> clazz) {
+        assertCanGenerate(clazz);
+
         Constructor<?>[] constructors = clazz.getConstructors();
         if (constructors.length == 0) {
             throw new ConstructorNotFoundException(clazz + " does not have a public constructor.");
@@ -59,6 +50,19 @@ public class InstanceGenerator {
         }
 
         return constructorsWithInject[0];
+    }
+
+    private static void assertCanGenerate(Class<?> clazz) {
+        int modifiers = clazz.getModifiers();
+        if (Modifier.isInterface(modifiers)) {
+            throw new InstanceGenerateException(
+                    "Unable to generate " + clazz + " instance. Because it is an interface.");
+        }
+
+        if (Modifier.isAbstract(modifiers)) {
+            throw new InstanceGenerateException(
+                    "Unable to generate " + clazz + " instance. Because it is an abstract class.");
+        }
     }
 
 }
