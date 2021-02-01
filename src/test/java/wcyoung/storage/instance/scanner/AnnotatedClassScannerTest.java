@@ -7,6 +7,7 @@ import wcyoung.storage.instance.classes.ClassB;
 import wcyoung.storage.instance.classes.ClassC;
 import wcyoung.storage.instance.classes.ClassD;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -19,8 +20,13 @@ class AnnotatedClassScannerTest {
                 "wcyoung.storage.instance.classes", Item.class);
         Set<Class<?>> classes = scanner.scan();
 
-        Class<?>[] expectedClasses = {ClassA.class, ClassB.class, ClassC.class, ClassD.class};
-        assertArrayEquals(expectedClasses, classes.toArray(new Class<?>[0]));
+        Set<Class<?>> expectedClasses = new HashSet<>();
+        expectedClasses.add(ClassA.class);
+        expectedClasses.add(ClassB.class);
+        expectedClasses.add(ClassC.class);
+        expectedClasses.add(ClassD.class);
+
+        assertEquals(expectedClasses, classes);
     }
 
 }
