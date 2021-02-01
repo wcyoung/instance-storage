@@ -3,7 +3,6 @@ package wcyoung.storage.instance.loader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import wcyoung.storage.instance.Storage;
 import wcyoung.storage.instance.collector.DependencyCollector;
@@ -11,16 +10,16 @@ import wcyoung.storage.instance.generator.InstanceGenerator;
 
 public class DependentClassesLoader extends AbstractStorageLoader<Class<?>, Object> {
 
-    private Map<Class<?>, Set<Class<?>>> dependencies;
-    private DependencyCollector<Map<Class<?>, Set<Class<?>>>> collector;
+    private Map<Class<?>, List<Class<?>>> dependencies;
+    private DependencyCollector<Map<Class<?>, List<Class<?>>>> collector;
 
-    public DependentClassesLoader(Storage<Class<?>, Object> storage, Map<Class<?>, Set<Class<?>>> dependencies) {
+    public DependentClassesLoader(Storage<Class<?>, Object> storage, Map<Class<?>, List<Class<?>>> dependencies) {
         super(storage);
         this.dependencies = dependencies;
     }
 
     public DependentClassesLoader(Storage<Class<?>, Object> storage,
-                                  DependencyCollector<Map<Class<?>, Set<Class<?>>>> collector) {
+                                  DependencyCollector<Map<Class<?>, List<Class<?>>>> collector) {
         super(storage);
         this.collector = collector;
     }
@@ -39,7 +38,7 @@ public class DependentClassesLoader extends AbstractStorageLoader<Class<?>, Obje
             return false;
         }
 
-        for (Map.Entry<Class<?>, Set<Class<?>>> entry : dependencies.entrySet()) {
+        for (Map.Entry<Class<?>, List<Class<?>>> entry : dependencies.entrySet()) {
             Class<?> clazz = entry.getKey();
             if (storage.has(clazz)) {
                 continue;

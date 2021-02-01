@@ -3,9 +3,7 @@ package wcyoung.storage.instance.collector;
 import org.junit.jupiter.api.Test;
 import wcyoung.storage.instance.scanner.ClassScanner;
 
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -17,9 +15,9 @@ class ClassesDependencyCollectorTest {
         classes.add(DependencyClassA.class);
 
         ClassesDependencyCollector collector = new ClassesDependencyCollector(classes);
-        Map<Class<?>, Set<Class<?>>> dependencies = collector.collect();
+        Map<Class<?>, List<Class<?>>> dependencies = collector.collect();
 
-        Set<Class<?>> expectedClasses = new HashSet<>();
+        List<Class<?>> expectedClasses = new ArrayList<>();
         expectedClasses.add(DependencyClassB.class);
         expectedClasses.add(DependencyClassC.class);
 
@@ -38,9 +36,9 @@ class ClassesDependencyCollectorTest {
         };
 
         ClassesDependencyCollector collector = new ClassesDependencyCollector(scanner);
-        Map<Class<?>, Set<Class<?>>> dependencies = collector.collect();
+        Map<Class<?>, List<Class<?>>> dependencies = collector.collect();
 
-        Set<Class<?>> expectedClasses = new HashSet<>();
+        List<Class<?>> expectedClasses = new ArrayList<>();
         expectedClasses.add(DependencyClassB.class);
         expectedClasses.add(DependencyClassC.class);
 
@@ -50,7 +48,7 @@ class ClassesDependencyCollectorTest {
     @Test
     void collectFailBecauseClassesNull() {
         ClassesDependencyCollector collector = new ClassesDependencyCollector((Set<Class<?>>) null);
-        Map<Class<?>, Set<Class<?>>> dependencies = collector.collect();
+        Map<Class<?>, List<Class<?>>> dependencies = collector.collect();
 
         assertNull(dependencies);
     }
@@ -58,7 +56,7 @@ class ClassesDependencyCollectorTest {
     @Test
     void collectFailBecauseScannerNull() {
         ClassesDependencyCollector collector = new ClassesDependencyCollector((ClassScanner<Set<Class<?>>>) null);
-        Map<Class<?>, Set<Class<?>>> dependencies = collector.collect();
+        Map<Class<?>, List<Class<?>>> dependencies = collector.collect();
 
         assertNull(dependencies);
     }

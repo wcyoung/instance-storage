@@ -4,12 +4,9 @@ import wcyoung.storage.instance.generator.InstanceGenerator;
 import wcyoung.storage.instance.scanner.ClassScanner;
 
 import java.lang.reflect.Constructor;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
-public class ClassesDependencyCollector implements DependencyCollector<Map<Class<?>, Set<Class<?>>>> {
+public class ClassesDependencyCollector implements DependencyCollector<Map<Class<?>, List<Class<?>>>> {
 
     private Set<Class<?>> classes;
     private ClassScanner<Set<Class<?>>> scanner;
@@ -23,7 +20,7 @@ public class ClassesDependencyCollector implements DependencyCollector<Map<Class
     }
 
     @Override
-    public Map<Class<?>, Set<Class<?>>> collect() {
+    public Map<Class<?>, List<Class<?>>> collect() {
         if (scanner != null) {
             classes = scanner.scan();
         }
@@ -32,10 +29,10 @@ public class ClassesDependencyCollector implements DependencyCollector<Map<Class
             return null;
         }
 
-        Map<Class<?>, Set<Class<?>>> dependencies = new HashMap<>();
+        Map<Class<?>, List<Class<?>>> dependencies = new HashMap<>();
 
         classes.forEach(clazz -> {
-            Set<Class<?>> parameterTypes = new HashSet<>();
+            List<Class<?>> parameterTypes = new ArrayList<>();
 
             Constructor<?> constructor = InstanceGenerator.findConstructor(clazz);
             for (Class<?> parameterType : constructor.getParameterTypes()) {
