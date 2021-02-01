@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import wcyoung.storage.instance.classes.ClassA;
 import wcyoung.storage.instance.classes.ClassB;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -53,8 +54,10 @@ class NameStorageTest {
         void keys() {
             Set<String> keys = storage.keys();
 
-            String[] expectedKeys = {"classA"};
-            assertArrayEquals(expectedKeys, keys.toArray(new String[0]));
+            Set<String> expectedKeys = new HashSet<>();
+            expectedKeys.add("classA");
+
+            assertEquals(expectedKeys, keys);
         }
 
         @Test
