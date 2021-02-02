@@ -27,4 +27,12 @@ class ItemScannerTest {
         assertEquals(expectedClasses, classes);
     }
 
+    @Test
+    void scanFail() {
+        ItemScanner scanner = new ItemScanner("nothing.package");
+        Set<Class<?>> classes = scanner.scan();
+
+        assertNull(classes);
+    }
+
 }

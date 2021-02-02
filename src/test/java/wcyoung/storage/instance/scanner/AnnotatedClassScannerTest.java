@@ -29,4 +29,12 @@ class AnnotatedClassScannerTest {
         assertEquals(expectedClasses, classes);
     }
 
+    @Test
+    void scanFail() {
+        AnnotatedClassScanner scanner = new AnnotatedClassScanner("nothing.package", Item.class);
+        Set<Class<?>> classes = scanner.scan();
+
+        assertNull(classes);
+    }
+
 }
