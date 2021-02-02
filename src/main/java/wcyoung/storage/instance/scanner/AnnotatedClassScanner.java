@@ -1,6 +1,7 @@
 package wcyoung.storage.instance.scanner;
 
 import org.reflections.Reflections;
+import org.reflections.ReflectionsException;
 import org.reflections.scanners.TypeAnnotationsScanner;
 
 import java.lang.annotation.Annotation;
@@ -15,7 +16,11 @@ public class AnnotatedClassScanner extends AbstractAnnotatedClassScanner<Set<Cla
     @Override
     public Set<Class<?>> scan() {
         Reflections reflections = new Reflections(basePackage, new TypeAnnotationsScanner());
-        return reflections.getTypesAnnotatedWith(annotationType, true);
+        try {
+            return reflections.getTypesAnnotatedWith(annotationType, true);
+        } catch (ReflectionsException e) {
+            return null;
+        }
     }
 
 }
