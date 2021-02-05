@@ -15,6 +15,10 @@ public class AnnotatedClassScanner extends AbstractAnnotatedClassScanner<Set<Cla
 
     @Override
     public Set<Class<?>> scan() {
+        if (basePackage == null || annotationType == null) {
+            return null;
+        }
+
         Reflections reflections = new Reflections(basePackage, new TypeAnnotationsScanner());
         try {
             return reflections.getTypesAnnotatedWith(annotationType, true);

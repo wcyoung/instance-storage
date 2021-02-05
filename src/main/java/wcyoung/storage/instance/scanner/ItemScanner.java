@@ -15,6 +15,10 @@ public class ItemScanner extends AbstractAnnotatedClassScanner<Set<Class<?>>> {
 
     @Override
     public Set<Class<?>> scan() {
+        if (basePackage == null) {
+            return null;
+        }
+
         Reflections reflections = new Reflections(basePackage, new TypeAnnotationsScanner());
         try {
             return reflections.getTypesAnnotatedWith(annotationType, true);

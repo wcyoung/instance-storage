@@ -29,4 +29,12 @@ class ItemScannerTest {
         assertNull(classes);
     }
 
+    @Test
+    void scanFailBecauseBasePackageNull() {
+        ItemScanner scanner = new ItemScanner(null);
+        Set<Class<?>> classes = scanner.scan();
+
+        assertNull(classes);
+    }
+
 }
