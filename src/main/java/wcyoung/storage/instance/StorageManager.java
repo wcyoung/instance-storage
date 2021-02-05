@@ -37,6 +37,10 @@ public class StorageManager {
         }
 
         public StorageManager initialize() {
+            if (loader == null) {
+                throw new NullPointerException("loader is null");
+            }
+
             if (isInitialized()) {
                 throw new StorageInitializeException("StorageManager has already been initialized.");
             }

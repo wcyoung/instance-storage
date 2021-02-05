@@ -30,7 +30,14 @@ class StorageManagerTest {
 
     @Order(30)
     @Test
-    void initializeFail() {
+    void initializeFailBecauseLoaderNull() {
+        StorageManager.StorageInitializer initializer = new StorageManager.StorageInitializer(null);
+        assertThrows(NullPointerException.class, initializer::initialize);
+    }
+
+    @Order(40)
+    @Test
+    void initializeFailBecauseLoadFail() {
         ClassStorage classStorage = new ClassStorage();
         AbstractStorageLoader<Class<?>, Object> loader = new AbstractStorageLoader<Class<?>, Object>(classStorage) {
             @Override
