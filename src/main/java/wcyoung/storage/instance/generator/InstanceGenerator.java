@@ -15,6 +15,10 @@ public class InstanceGenerator {
 
     @SuppressWarnings("unchecked")
     public static <T> T generate(Constructor<?> constructor, Object... parameters) {
+        if (constructor == null) {
+            throw new NullPointerException("constructor is null");
+        }
+
         assertCanGenerate(constructor.getDeclaringClass());
 
         try {
@@ -26,6 +30,10 @@ public class InstanceGenerator {
     }
 
     public static Constructor<?> findConstructor(Class<?> clazz) {
+        if (clazz == null) {
+            throw new NullPointerException("clazz is null");
+        }
+
         assertCanGenerate(clazz);
 
         Constructor<?>[] constructors = clazz.getConstructors();
@@ -54,6 +62,7 @@ public class InstanceGenerator {
 
     private static void assertCanGenerate(Class<?> clazz) {
         int modifiers = clazz.getModifiers();
+
         if (Modifier.isInterface(modifiers)) {
             throw new InstanceGenerateException(
                     "Unable to generate " + clazz + " instance. Because it is an interface.");

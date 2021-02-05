@@ -39,6 +39,11 @@ class InstanceGeneratorTest {
     }
 
     @Test
+    void generateFailBecauseNull() {
+        assertThrows(NullPointerException.class, () -> InstanceGenerator.generate((Class<?>) null));
+    }
+
+    @Test
     void generateFailBecauseInterface() {
         assertThrows(InstanceGenerateException.class, () -> InstanceGenerator.generate(InterfaceA.class));
     }
@@ -84,6 +89,11 @@ class InstanceGeneratorTest {
     }
 
     @Test
+    void generateWithConstructorFailBecauseNull() {
+        assertThrows(NullPointerException.class, () -> InstanceGenerator.generate((Constructor<?>) null));
+    }
+
+    @Test
     void generateWithConstructorFailBecauseIllegalArgument() {
         assertThrows(InstanceGenerateException.class, () -> {
             Constructor<?> constructor = InstanceGenerator.findConstructor(CaseC.class);
@@ -109,6 +119,11 @@ class InstanceGeneratorTest {
     @Test
     void findConstructorWithInject() {
         assertNotNull(InstanceGenerator.findConstructor(CaseC.class));
+    }
+
+    @Test
+    void findConstructorFailBecauseNull() {
+        assertThrows(NullPointerException.class, () -> InstanceGenerator.findConstructor(null));
     }
 
     @Test
