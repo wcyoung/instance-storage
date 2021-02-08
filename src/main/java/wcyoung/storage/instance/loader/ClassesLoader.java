@@ -1,24 +1,27 @@
 package wcyoung.storage.instance.loader;
 
-import wcyoung.storage.instance.Storage;
-import wcyoung.storage.instance.generator.InstanceGenerator;
-import wcyoung.storage.instance.scanner.ClassScanner;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
-import java.util.Set;
+import wcyoung.storage.instance.Storage;
+import wcyoung.storage.instance.collector.DependencyCollector;
+import wcyoung.storage.instance.generator.InstanceGenerator;
 
 public class ClassesLoader extends AbstractStorageLoader<Class<?>, Object> {
 
-    private Set<Class<?>> classes;
-    private ClassScanner<Set<Class<?>>> scanner;
+    private Map<Class<?>, List<Class<?>>> dependencies;
+    private DependencyCollector<Map<Class<?>, List<Class<?>>>> collector;
 
-    public ClassesLoader(Storage<Class<?>, Object> storage, Set<Class<?>> classes) {
+    public ClassesLoader(Storage<Class<?>, Object> storage, Map<Class<?>, List<Class<?>>> dependencies) {
         super(storage);
-        this.classes = classes;
+        this.dependencies = dependencies;
     }
 
-    public ClassesLoader(Storage<Class<?>, Object> storage, ClassScanner<Set<Class<?>>> scanner) {
+    public ClassesLoader(Storage<Class<?>, Object> storage,
+                         DependencyCollector<Map<Class<?>, List<Class<?>>>> collector) {
         super(storage);
-        this.scanner = scanner;
+        this.collector = collector;
     }
 
     @Override
@@ -27,20 +30,73 @@ public class ClassesLoader extends AbstractStorageLoader<Class<?>, Object> {
             return false;
         }
 
-        if (scanner != null) {
-            classes = scanner.scan();
+        if (collector != null) {
+            dependencies = collector.collect();
         }
 
-        if (classes == null) {
+        if (dependencies == null) {
             return false;
         }
 
-        for (Class<?> clazz : classes) {
-            Object instance = InstanceGenerator.generate(clazz);
+        for (Map.Entry<Class<?>, List<Class<?>>> entry : dependencies.entrySet()) {
+            Class<?> clazz = entry.getKey();
+            if (storage.has(clazz)) {
+                continue;
+            }
+
+            List<Class<?>> references = new ArrayList<>();
+
+            Object instance = generateWithDependencies(clazz, references);
             storage.add(clazz, instance);
         }
 
         return true;
+    }
+
+    private Object generateWithDependencies(Class<?> reference, List<Class<?>> references) {
+        references.add(reference);
+
+        List<Object> parameters = new ArrayList<>();
+
+        for (Class<?> clazz : dependencies.get(reference)) {
+            if (references.contains(clazz)) {
+                List<Class<?>> circularReferences = new ArrayList<>(
+                        references.subList(references.indexOf(clazz), references.size()));
+                throw new CircularReferenceException(getExceptionMessage(circularReferences));
+            }
+
+            Object parameter;
+            if (storage.has(clazz)) {
+                parameter = storage.get(clazz);
+            } else if (dependencies.containsKey(clazz)) {
+                parameter = generateWithDependencies(clazz, references);
+            } else {
+                parameter = null;
+            }
+
+            parameters.add(parameter);
+        }
+
+        references.remove(reference);
+
+        Object instance = InstanceGenerator.generate(reference, parameters.toArray(new Object[0]));
+        storage.add(reference, instance);
+
+        return instance;
+    }
+
+    private String getExceptionMessage(List<Class<?>> circularReferences) {
+        StringBuilder sb = new StringBuilder("Circular reference error.\n");
+        sb.append("┌─────┐\n");
+
+        String[] classes = circularReferences.stream()
+                .map(clazz -> "↑    " + clazz + "\n")
+                .toArray(String[]::new);
+
+        sb.append(String.join("│     ↓\n", classes));
+        sb.append("└─────┘");
+
+        return sb.toString();
     }
 
 }
