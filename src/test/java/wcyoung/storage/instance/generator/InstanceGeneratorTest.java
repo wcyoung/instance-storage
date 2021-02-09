@@ -39,17 +39,17 @@ class InstanceGeneratorTest {
     }
 
     @Test
-    void generateFailBecauseNull() {
+    void generateFailBecauseClassIsNull() {
         assertThrows(NullPointerException.class, () -> InstanceGenerator.generate((Class<?>) null));
     }
 
     @Test
-    void generateFailBecauseInterface() {
+    void generateFailBecauseClassIsInterface() {
         assertThrows(InstanceGenerateException.class, () -> InstanceGenerator.generate(InterfaceA.class));
     }
 
     @Test
-    void generateFailBecauseAbstract() {
+    void generateFailBecauseClassIsAbstract() {
         assertThrows(InstanceGenerateException.class, () -> InstanceGenerator.generate(AbstractClassA.class));
     }
 
@@ -89,7 +89,7 @@ class InstanceGeneratorTest {
     }
 
     @Test
-    void generateWithConstructorFailBecauseNull() {
+    void generateWithConstructorFailBecauseConstructorIsNull() {
         assertThrows(NullPointerException.class, () -> InstanceGenerator.generate((Constructor<?>) null));
     }
 
@@ -122,28 +122,28 @@ class InstanceGeneratorTest {
     }
 
     @Test
-    void findConstructorFailBecauseNull() {
+    void findConstructorFailBecauseClassIsNull() {
         assertThrows(NullPointerException.class, () -> InstanceGenerator.findConstructor(null));
     }
 
     @Test
-    void findConstructorFailBecauseInterface() {
+    void findConstructorFailBecauseClassIsInterface() {
         assertThrows(InstanceGenerateException.class, () -> InstanceGenerator.findConstructor(InterfaceA.class));
     }
 
     @Test
-    void findConstructorFailBecauseAbstract() {
+    void findConstructorFailBecauseClassIsAbstract() {
         assertThrows(InstanceGenerateException.class, () -> InstanceGenerator.findConstructor(AbstractClassA.class));
     }
 
     @Test
-    void findConstructorFailBecauseDoesNotHavePublic() {
+    void findConstructorFailBecauseItDoesNotHavePublic() {
         assertThrows(ConstructorNotFoundException.class, () ->
                 InstanceGenerator.findConstructor(ConstructorNotFoundCaseA.class));
     }
 
     @Test
-    void findConstructorFailBecauseDoesNotHavePublicWithInject() {
+    void findConstructorFailBecauseItDoesNotHavePublicWithInject() {
         assertThrows(ConstructorNotFoundException.class, () ->
                 InstanceGenerator.findConstructor(ConstructorNotFoundCaseB.class));
     }

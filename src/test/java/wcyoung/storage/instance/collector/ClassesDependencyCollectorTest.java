@@ -46,7 +46,7 @@ class ClassesDependencyCollectorTest {
     }
 
     @Test
-    void collectFailBecauseClassesNull() {
+    void collectFailBecauseClassesIsNull() {
         ClassesDependencyCollector collector = new ClassesDependencyCollector((Set<Class<?>>) null);
         Map<Class<?>, List<Class<?>>> dependencies = collector.collect();
 
@@ -54,7 +54,7 @@ class ClassesDependencyCollectorTest {
     }
 
     @Test
-    void collectFailBecauseScannerNull() {
+    void collectFailBecauseScannerIsNull() {
         ClassesDependencyCollector collector = new ClassesDependencyCollector((ClassScanner<Set<Class<?>>>) null);
         Map<Class<?>, List<Class<?>>> dependencies = collector.collect();
 

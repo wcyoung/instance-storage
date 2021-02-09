@@ -32,7 +32,7 @@ class AnnotatedClassScannerTest {
     }
 
     @Test
-    void scanFailBecauseBasePackageNull() {
+    void scanFailBecauseBasePackageIsNull() {
         AnnotatedClassScanner scanner = new AnnotatedClassScanner(null, Item.class);
         Set<Class<?>> classes = scanner.scan();
 
@@ -40,7 +40,7 @@ class AnnotatedClassScannerTest {
     }
 
     @Test
-    void scanFailBecauseAnnotationTypeNull() {
+    void scanFailBecauseAnnotationTypeIsNull() {
         AnnotatedClassScanner scanner = new AnnotatedClassScanner("wcyoung.storage.instance.classes", null);
         Set<Class<?>> classes = scanner.scan();
 

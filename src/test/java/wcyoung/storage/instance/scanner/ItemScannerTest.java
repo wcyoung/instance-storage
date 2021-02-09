@@ -30,7 +30,7 @@ class ItemScannerTest {
     }
 
     @Test
-    void scanFailBecauseBasePackageNull() {
+    void scanFailBecauseBasePackageIsNull() {
         ItemScanner scanner = new ItemScanner(null);
         Set<Class<?>> classes = scanner.scan();
 

@@ -30,7 +30,7 @@ class StorageManagerTest {
 
     @Order(30)
     @Test
-    void initializeFailBecauseLoaderNull() {
+    void initializeFailBecauseLoaderIsNull() {
         StorageManager.StorageInitializer initializer = new StorageManager.StorageInitializer(null);
         assertThrows(NullPointerException.class, initializer::initialize);
     }

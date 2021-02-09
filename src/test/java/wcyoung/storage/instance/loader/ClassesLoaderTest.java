@@ -57,7 +57,7 @@ class ClassesLoaderTest {
     }
 
     @Test
-    void loadFailBecauseStorageNull() {
+    void loadFailBecauseStorageIsNull() {
         Map<Class<?>, List<Class<?>>> dependencies = new HashMap<>();
         dependencies.put(MechanicalPencil.class, Collections.singletonList(MechanicalPencilLead.class));
 
@@ -67,7 +67,7 @@ class ClassesLoaderTest {
     }
 
     @Test
-    void loadFailBecauseDependenciesNull() {
+    void loadFailBecauseDependenciesIsNull() {
         ClassStorage storage = new ClassStorage();
 
         ClassesLoader loader = new ClassesLoader(storage, (Map<Class<?>, List<Class<?>>>) null);
@@ -76,7 +76,7 @@ class ClassesLoaderTest {
     }
 
     @Test
-    void loadFailBecauseCollectorNull() {
+    void loadFailBecauseCollectorIsNull() {
         ClassStorage storage = new ClassStorage();
 
         ClassesLoader loader = new ClassesLoader(storage, (DependencyCollector<Map<Class<?>, List<Class<?>>>>) null);
@@ -108,7 +108,7 @@ class ClassesLoaderTest {
     }
 
     @Test
-    void loadFailBecauseCirculationDependence() {
+    void loadFailBecauseCircularDependencies() {
         ClassStorage storage = new ClassStorage();
 
         Map<Class<?>, List<Class<?>>> dependencies = new HashMap<>();
